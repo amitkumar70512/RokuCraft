@@ -1,0 +1,34 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "module": "commonjs",
+        "lib": [
+            "dom",
+            "es2015"
+        ],
+        "jsx": "react",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "moduleResolution": "node",
+        "baseUrl": "./", // Adjusted baseUrl to the root directory
+        "paths": {
+            "*": [
+                "src/*"
+            ] // Adjusted paths to match the structure
+        },
+        "outDir": "./dist",
+        "rootDir": "./src",
+        "strictNullChecks": true,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "alwaysStrict": true
+    },
+    "include": [
+        "src/**/*.tsx"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

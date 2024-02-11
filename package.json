@@ -1,0 +1,22 @@
+{
+  "name": "typescript-react-project-roku-craft",
+  "version": "1.0.0",
+  "description": "a reactjs typescript roku craft app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack --mode=development",
+    "prod": "webpack --mode=production"
+  },
+  "author": "amit kumar",
+  "license": "ISC",
+  "dependencies": {
+    "@types/react": "^18.2.55",
+    "@types/react-dom": "^18.2.19",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "ts-loader": "^9.5.1",
+    "webpack": "^5.90.1",
+    "webpack-cli": "^5.1.4"
+  }
+}
