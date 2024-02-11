@@ -18,7 +18,7 @@
                 "src/*"
             ] // Adjusted paths to match the structure
         },
-        "outDir": "./dist",
+        "outDir": "build",
         "rootDir": "./src",
         "strictNullChecks": true,
         "noImplicitAny": true,
