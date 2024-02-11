@@ -1,8 +1,12 @@
+import App from "./App";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-ReactDOM.render(
-    <div>
-        <h1>Hello, Welcome to React and TypeScript</h1>
-    </div>,
-    document.getElementById("root")
-);
+import { createRoot } from 'react-dom/client';
+
+const rootElement = document.getElementById('root');
+
+if (rootElement) {
+    const root = createRoot(rootElement);
+    root.render(<App />);
+} else {
+    console.error("Element with ID 'root' not found.");
+}
