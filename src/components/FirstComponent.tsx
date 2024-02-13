@@ -1,18 +1,33 @@
 import React from "react";
+import { useState } from "react";
+import { storage } from "../firebase"
+import { ref, uploadBytes } from 'firebase/storage';
 
-const Logo = "https://logrocket-assets.io/static/home-hero-c97849b227a3d3015730e3371a76a7f0.svg";
+const About: React.FC<{}> = () => {
+    const [imageUpload, setImageUpload] = useState<File | null>(null);
 
-const FirstComponent: React.FC<{}> = () => {
+
+    const uploadImage = () => {
+        if (imageUpload == null) return;
+        const imageRef = ref(storage, `test/${imageUpload.name}`);
+        uploadBytes(imageRef, imageUpload).then(() => {
+            alert("image uploaded")
+        })
+    }
     return (
         <div>
             <h3>A Simple React Component Example with Typescript</h3>
             <div>
-                <img height="250" src={Logo} alt="Logo" />
+                <input type="file" onChange={(event) => {
+                    if (event.target.files && event.target.files.length > 0) {
+                        setImageUpload(event.target.files[0]);
+                    }
+                }} />
+                <button onClick={uploadImage}>upload image</button>
             </div>
-            <p>This component shows the Logrocket logo.</p>
-            <p>For more info on Logrocket, please visit <a href="https://logrocket.com">https://logrocket.com</a></p>
+            <p>This component will upload image to firestore.</p>
         </div>
     );
 };
 
-export default FirstComponent;
+export default About;
