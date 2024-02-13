@@ -6,6 +6,7 @@ import Header from "./components/Header/Header";
 import Blogs from "./components/Blogs/Blogs";
 import About from "./components/About/About";
 import Admin from "./components/Admin/Admin";
+import Footer from "./components/Footer/Footer";
 
 const App: React.FC = () => {
     return (
@@ -21,6 +22,7 @@ const App: React.FC = () => {
                     <Route path="*" element={<FirstComponent />} />
                     {/* Add more routes as needed */}
                 </Routes>
+                <Footer />
             </div>
         </Router>
     );
