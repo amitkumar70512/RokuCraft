@@ -11,7 +11,7 @@ import Footer from "./components/Footer/Footer";
 const App: React.FC = () => {
     return (
         <Router>
-            <div className="container-lg">
+            <div className="container-fluid">
                 <Header />
                 <Routes>
                     <Route path="/" element={<FirstComponent />} />
