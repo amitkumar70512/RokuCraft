@@ -4,7 +4,8 @@ node_modules/
 # Ignore build artifacts
 build/
 
-firebase.tsx
+# Uncomment later after website is ready
+# firebase.tsx
 
 # Ignore environment-specific files
 .env
