@@ -20,12 +20,12 @@ async function main() {
 
         // Example data to add a new blog
         const newBlogData = {
-            author: 'John Doe',
+            author: 'Shivanand P',
             date: new Date(), // Assuming current date/time
-            image: 'path/to/image.jpg',
+            image: 'https://unsplash.com/photos/a-desktop-computer-monitor-sitting-on-top-of-a-wooden-desk-xsBoFvvsnKQ',
             content: 'Lorem ipsum dolor sit amet...',
             isPremium: false,
-            keywords: ['Firestore', 'Firebase']
+            keywords: ['bi', 'smart']
         };
 
         const newBlogId = await addBlog(newBlogData);
