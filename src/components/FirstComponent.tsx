@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { storage } from "../firebase"
+import { storage } from "../firebase/firebase"
 import { ref, uploadBytes } from 'firebase/storage';
 
 const About: React.FC<{}> = () => {
