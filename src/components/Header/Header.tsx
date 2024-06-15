@@ -19,6 +19,9 @@ function Header() {
                             <Link className='nav-link' to="./about">About Us </Link>
                         </li>
                         <li>
+                            <Link className='nav-link' to="./contact">Contact Us </Link>
+                        </li>
+                        <li>
                             <Link className='nav-link' to="./blogs">Blogs</Link>
 
                         </li>
