@@ -7,6 +7,7 @@ import Blogs from "./components/Blogs/Blogs";
 import About from "./components/About/About";
 import Admin from "./components/Admin/Admin";
 import Footer from "./components/Footer/Footer";
+import Contact from "./components/Contact/Contact";
 
 const App: React.FC = () => {
     return (
@@ -17,6 +18,7 @@ const App: React.FC = () => {
                     <Route path="/" element={<FirstComponent />} />
                     <Route path="/home" element={<FirstComponent />} />
                     <Route path="/about" element={<About />} />
+                    <Route path="/contact" element={<Contact />} />
                     <Route path="/blogs" element={<Blogs />} />
                     <Route path="/admin" element={<Admin />} />
                     <Route path="*" element={<FirstComponent />} />
