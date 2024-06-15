@@ -6,9 +6,6 @@ export default function IndividualBlog() {
     return (
         <div className="container">
 
-            <RecentBlog />
-            <CategoryBar />
-
             <main role="main" className="container">
                 <div className="row">
                     <div className="col-md-8 blog-main">
