@@ -1,7 +1,7 @@
 // app.tsx
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Header from "./components/Header/Header";
+import Header from "./components/Headers/Header";
 import Blogs from "./components/Blogs/Blogs";
 import About from "./components/About/About";
 import Admin from "./components/Admin/Admin";
