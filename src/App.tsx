@@ -8,6 +8,7 @@ import Admin from "./components/Admin/Admin";
 import Footer from "./components/Footer/Footer";
 import Contact from "./components/Contact/Contact";
 import Home from "./components/Home/Home";
+import GoToTopButton from "./components/GoToTopButton/GoToTopButton";
 
 const App: React.FC = () => {
     return (
@@ -25,6 +26,7 @@ const App: React.FC = () => {
                     {/* Add more routes as needed */}
                 </Routes> 
                 <Footer />
+                <GoToTopButton/>
             </div>
         </Router>
     );
