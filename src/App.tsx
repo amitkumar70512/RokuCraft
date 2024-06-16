@@ -23,7 +23,7 @@ const App: React.FC = () => {
                     <Route path="/admin" element={<Admin />} />
                     <Route path="*" element={<Home />} />
                     {/* Add more routes as needed */}
-                </Routes>
+                </Routes> 
                 <Footer />
             </div>
         </Router>
