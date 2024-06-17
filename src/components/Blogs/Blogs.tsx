@@ -29,7 +29,7 @@ export default function Blogs() {
                     {/* Render BlogCard components dynamically */}
                     <div className="row">
                         {blogData.map((blog) => (
-                                <BlogCard blog={blog} />
+                                <BlogCard blog={blog} key={blog.id}/>
                         ))}
                     </div>
                 </div>
