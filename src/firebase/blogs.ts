@@ -2,6 +2,7 @@
 import { db } from './firebase';
 import { Blog } from './interface';
 import { collection, getDocs, query, where, addDoc, Timestamp } from 'firebase/firestore';
+import { v4 as uuidv4 } from 'uuid'; // Import uuidv4 to generate random IDs
 
 // Function to get all blogs
 export async function getAllBlogs(): Promise<Blog[]> {
@@ -33,6 +34,9 @@ export async function getFilteredBlogs(filters: Partial<Blog>): Promise<Blog[]> 
         let blogsRef = collection(db, 'blogs');
 
         // Apply filters if provided
+        if (filters.id) {
+            blogsRef = query(blogsRef, where('id', '==', filters.id)) as any;
+        }
         if (filters.author) {
             blogsRef = query(blogsRef, where('author', '==', filters.author)) as any;
         }
@@ -42,7 +46,6 @@ export async function getFilteredBlogs(filters: Partial<Blog>): Promise<Blog[]> 
 
         if (filters.category !== undefined) {
             blogsRef = query(blogsRef, where('category', 'array-contains-any', filters.category)) as any;
-
         }
         // Add more filters as needed
 
@@ -69,8 +72,11 @@ export async function getFilteredBlogs(filters: Partial<Blog>): Promise<Blog[]> 
 // Function to add a new blog with default values
 export async function addBlog(blogData: Partial<Blog>): Promise<string> {
     try {
+        // Omit 'coins', 'doe', 'dop' from Blog interface
+type DefaultBlogData = Omit<Blog, 'coins' | 'doe' | 'dop'>;
         // Default values
-        const defaultBlogData: Omit<Blog, 'coins' | 'doe' | 'dop'> = {
+        const defaultBlogData: DefaultBlogData = {
+            id: uuidv4(),
             author: 'Anonymous',
             image: '',
             content: '',
