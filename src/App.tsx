@@ -9,6 +9,7 @@ import Footer from "./components/Footer/Footer";
 import Contact from "./components/Contact/Contact";
 import Home from "./components/Home/Home";
 import GoToTopButton from "./components/GoToTopButton/GoToTopButton";
+import Login from "./components/Login/Login";
 
 const App: React.FC = () => {
     return (
@@ -22,6 +23,7 @@ const App: React.FC = () => {
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/blogs" element={<Blogs />} />
                     <Route path="/admin" element={<Admin />} />
+                    <Route path="/login" element={<Login />} />
                     <Route path="*" element={<Home />} />
                     {/* Add more routes as needed */}
                 </Routes> 

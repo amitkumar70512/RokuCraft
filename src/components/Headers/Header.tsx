@@ -16,9 +16,6 @@ function Header() {
                             <Link className='nav-link' to="./">Logo</Link>
                         </li>
                         <li>
-                            <Link className='nav-link' to="./about">About Us </Link>
-                        </li>
-                        <li>
                             <Link className='nav-link' to="./contact">Contact Us </Link>
                         </li>
                         <li>
@@ -26,7 +23,7 @@ function Header() {
 
                         </li>
                         <li>
-                            <Link className='nav-link' to="./admin">Admin</Link>
+                            <Link className='nav-link' to="./login">Login</Link>
                         </li>
                     </ul>
 
