@@ -9,7 +9,7 @@ function LatestBlogs() {
 						<strong className="d-inline-block mb-2 text-primary">World</strong>
 						<h3 className="mb-0">
 							<a className="text-dark" href="#">
-								Featured post
+								Latest post 1
 							</a>
 						</h3>
 						<div className="mb-1 text-muted">Nov 12</div>
@@ -32,7 +32,7 @@ function LatestBlogs() {
 						<strong className="d-inline-block mb-2 text-success">Design</strong>
 						<h3 className="mb-0">
 							<a className="text-dark" href="#">
-								Post title
+							Latest Blog 2
 							</a>
 						</h3>
 						<div className="mb-1 text-muted">Nov 11</div>
