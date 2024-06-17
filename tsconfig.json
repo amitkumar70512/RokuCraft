@@ -29,7 +29,7 @@
     },
     "include": [
         "src/**/*.tsx"
-    ],
+, "src/firebase/LoginWithGoogle.ts"    ],
     "exclude": [
         "node_modules"
     ]
