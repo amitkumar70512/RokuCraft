@@ -1,42 +1,49 @@
 import React from "react";
+import { Blog } from '../../firebase/interface'; // Import Blog interface (adjust path as needed)
 
-function BlogCard() {
-	return (
-		<div className="col-md-4">
-			<div className="card mb-4 box-shadow">
-				<img
-					className="card-img-top"
-					src="https://picsum.photos/id/237/200/200"
-					alt="Card image cap"
-				/>
-				<small className="text-muted">Author Name</small>
-				<div className="card-body">
-					<p className="card-text">
-						This is a wider card with supporting text below as a natural lead-in
-						to additional content. This content is a little bit longer.
-					</p>
-					<div className="d-flex justify-content-between align-items-center">
-						<div className="btn-group">
-							<button
-								type="button"
-								className="btn btn-sm btn-outline-secondary"
-							>
-								View
-							</button>
-							<button
-								type="button"
-								className="btn btn-sm btn-outline-secondary"
-							>
-								Edit
-							</button>
-						</div>
-						<small className="text-muted">Category Tag</small>
-						<small className="text-muted">9 mins</small>
-					</div>
-				</div>
-			</div>
-		</div>
-	);
+interface BlogCardProps {
+    blog: Blog; 
+    isAdmin?: boolean; 
 }
+
+const BlogCard: React.FC<BlogCardProps> = ({ blog, isAdmin = false }) => {
+    return (
+        <div className="col-md-4">
+            <div className="card mb-4 box-shadow">
+                <img
+                    className="card-img-top"
+                    src={blog.image || "https://via.placeholder.com/200"}
+                    alt="Blog Thumbnail"
+                />
+                <small className="text-muted">By {blog.author || "Anonymous"}</small>
+                <div className="card-body">
+                    <p className="card-text">
+                        {blog.content}
+                    </p>
+                    <div className="d-flex justify-content-between align-items-center">
+                        <div className="btn-group">
+                            <button
+                                type="button"
+                                className="btn btn-sm btn-outline-secondary"
+                            >
+                                View
+                            </button>
+                            {isAdmin && (
+                                <button
+                                    type="button"
+                                    className="btn btn-sm btn-outline-secondary"
+                                >
+                                    Edit
+                                </button>
+                            )}
+                        </div>
+                        <small className="text-muted">{blog.category}</small>
+                        <small className="text-muted">9 mins</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
 
 export default BlogCard;

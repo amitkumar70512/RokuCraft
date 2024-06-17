@@ -39,6 +39,11 @@ export async function getFilteredBlogs(filters: Partial<Blog>): Promise<Blog[]> 
         if (filters.premium !== undefined) {
             blogsRef = query(blogsRef, where('premium', '==', filters.premium)) as any;
         }
+
+        if (filters.category !== undefined) {
+            blogsRef = query(blogsRef, where('category', 'array-contains-any', filters.category)) as any;
+
+        }
         // Add more filters as needed
 
         const snapshot = await getDocs(blogsRef);
@@ -63,40 +68,40 @@ export async function getFilteredBlogs(filters: Partial<Blog>): Promise<Blog[]> 
 
 // Function to add a new blog with default values
 export async function addBlog(blogData: Partial<Blog>): Promise<string> {
-  try {
-    // Default values
-    const defaultBlogData: Omit<Blog, 'coins' | 'doe' | 'dop'> = {
-      author: 'Anonymous',
-      image: '',
-      content: '',
-      summary: '',
-      keywords: [],
-      premium: false,
-    };
+    try {
+        // Default values
+        const defaultBlogData: Omit<Blog, 'coins' | 'doe' | 'dop'> = {
+            author: 'Anonymous',
+            image: '',
+            content: '',
+            summary: '',
+            category: [],
+            premium: false,
+        };
 
-    // Merge input data with default values
-    const mergedBlogData: Blog = {
-      ...defaultBlogData,
-      ...blogData,
-      doe: blogData.doe || new Date(), // Use current date if not provided
-      dop: blogData.dop || new Date(), // Use current date if not provided
-      coins: blogData.coins || 0, // Default to 0 if not provided
-    };
+        // Merge input data with default values
+        const mergedBlogData: Blog = {
+            ...defaultBlogData,
+            ...blogData,
+            doe: blogData.doe || new Date(), // Use current date if not provided
+            dop: blogData.dop || new Date(), // Use current date if not provided
+            coins: blogData.coins || 0, // Default to 0 if not provided
+        };
 
-    // Add blog to Firestore
-    const blogsCollection = collection(db, 'blogs');
-    const timestamp = Timestamp.now(); // Current timestamp
+        // Add blog to Firestore
+        const blogsCollection = collection(db, 'blogs');
+        const timestamp = Timestamp.now(); // Current timestamp
 
-    const newBlogRef = await addDoc(blogsCollection, {
-      ...mergedBlogData,
-      doe: timestamp, // Firestore timestamp for date of entry
-      dop: timestamp, // Firestore timestamp for date of publication
-    });
+        const newBlogRef = await addDoc(blogsCollection, {
+            ...mergedBlogData,
+            doe: timestamp, // Firestore timestamp for date of entry
+            dop: timestamp, // Firestore timestamp for date of publication
+        });
 
-    console.log('New blog added with ID:', newBlogRef.id);
-    return newBlogRef.id;
-  } catch (error) {
-    console.error('Error adding blog:', error);
-    throw error;
-  }
+        console.log('New blog added with ID:', newBlogRef.id);
+        return newBlogRef.id;
+    } catch (error) {
+        console.error('Error adding blog:', error);
+        throw error;
+    }
 }

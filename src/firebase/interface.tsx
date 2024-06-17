@@ -3,7 +3,7 @@ export interface Blog {
   image: string;
   content: string;
   summary: string;
-  keywords: string[];
+  category: string[];
   doe: Date;
   dop: Date;
   premium: boolean;
