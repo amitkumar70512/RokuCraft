@@ -37,6 +37,11 @@ export async function getFilteredBlogs(filters: Partial<Blog>): Promise<Blog[]> 
         if (filters.id) {
             blogsRef = query(blogsRef, where('id', '==', filters.id)) as any;
         }
+        
+        if (filters.title) {
+            blogsRef = query(blogsRef, where('title', '==', filters.title)) as any;
+        }
+
         if (filters.author) {
             blogsRef = query(blogsRef, where('author', '==', filters.author)) as any;
         }
@@ -61,7 +66,7 @@ export async function getFilteredBlogs(filters: Partial<Blog>): Promise<Blog[]> 
                 ...doc.data()
             } as Blog);
         });
-
+        console.log("firebase:: "+blogs);
         return blogs;
     } catch (error) {
         console.error('Error fetching filtered blogs:', error);
@@ -77,6 +82,7 @@ type DefaultBlogData = Omit<Blog, 'coins' | 'doe' | 'dop'>;
         // Default values
         const defaultBlogData: DefaultBlogData = {
             id: uuidv4(),
+            title: 'UNKNOWN',
             author: 'Anonymous',
             image: '',
             content: '',
