@@ -4,11 +4,11 @@ import BlogCard from "./BlogCard";
 function FeaturedBlogs() {
 	return (
 		<div className="row mb-2">
-			< BlogCard />
+			{/* < BlogCard />
 			< BlogCard />
 			< BlogCard />
 			<BlogCard />
-			<BlogCard />
+			<BlogCard /> */}
 		</div>
 	);
 }
