@@ -10,7 +10,7 @@
     "prod": "webpack --mode=production",
     "predeploy": "npm run prod",
     "deploy": "gh-pages -d build",
-    "start": "node server.js"
+    "start": "npm run dev && node server.js"
   },
   "author": "Amit kumar, Shivanand M",
   "license": "ISC",

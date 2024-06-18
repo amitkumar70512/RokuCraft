@@ -13,7 +13,7 @@ import Login from "./components/Login/Login";
 const App: React.FC = () => {
     return (
         <Router>
-            <div className="container-fluid">
+            <div className="justify-content-center">
                 <Header />
                 <Routes>
                     <Route path="/" element={<Home />} />
