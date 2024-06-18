@@ -8,7 +8,7 @@ import Blogs from "../Blogs/Blogs";
 
 function Home() {
 	return (
-		<>
+		<div className="m-5">
 			<ContinueReading />
 			<LatestBlogs />
 			<h2>Featured Blogs</h2>
@@ -19,12 +19,10 @@ function Home() {
 					<div>
 						<h1>TOP LIked BLOGS</h1>
 						<Blogs />
-						<Blogs />
-						<Blogs />
 					</div>
 				</main>
 			</div>
-		</>
+		</div>
 	)
 }
 
