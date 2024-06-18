@@ -1,6 +1,11 @@
 import React from 'react'
+import AdminEditor from './AdminEditor';
 
 export default function Admin() {
+    const handleAddSuccess = () => {
+        // Handle success (e.g., close modal, show notification)
+        console.log('Blog added successfully!');
+    };
     return (
         <div className="container-fluid">
             <div className="row">
@@ -80,6 +85,13 @@ export default function Admin() {
                     </div>
                 </nav>
 
+                <main role="main" className="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+                <div>
+                    <h1>Admin Panel</h1>
+                    <button onClick={() => console.log('Show add blog component')}>Add New Blog</button>
+                    <AdminEditor onAddSuccess={handleAddSuccess} />
+                </div>
+                </main>
                 <main role="main" className="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
                     <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
                         <h1 className="h2">Dashboard</h1>
