@@ -17,3 +17,17 @@ export interface Feedback {
   message: string;
   timestamp: Date;
 }
+
+export interface Bot {
+  id: string;
+  name: string;
+  mobile?: string;
+  email: string;
+  image: string;
+  password: string;
+  isPremium: boolean;
+  coins: number;
+  isAdmin: boolean;
+  doc: Date; // date of creation
+  doe: Date; // date of expiry of coins
+}
