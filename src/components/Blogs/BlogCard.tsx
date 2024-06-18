@@ -1,4 +1,5 @@
 import React from "react";
+import ReactMarkdown from 'react-markdown';
 import { Blog } from '../../firebase/interface'; // Import Blog interface (adjust path as needed)
 
 interface BlogCardProps {
@@ -18,7 +19,9 @@ const BlogCard: React.FC<BlogCardProps> = ({ blog, isAdmin = false }) => {
                 <small className="text-muted">By {blog.author || "Anonymous"}</small>
                 <div className="card-body">
                     <p className="card-text">
-                        {blog.content}
+                        <ReactMarkdown>
+                        {blog.summary}
+                        </ReactMarkdown>
                     </p>
                     <div className="d-flex justify-content-between align-items-center">
                         <div className="btn-group">

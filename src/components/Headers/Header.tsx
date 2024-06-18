@@ -25,6 +25,9 @@ function Header() {
                         <li>
                             <Link className='nav-link' to="./login">Login</Link>
                         </li>
+                        <li>
+                            <Link className='nav-link' to="./admin">admin</Link>
+                        </li>
                     </ul>
 
                 </div>
