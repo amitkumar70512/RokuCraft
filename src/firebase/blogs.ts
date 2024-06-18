@@ -38,9 +38,9 @@ export async function getFilteredBlogs(filters: Partial<Blog>): Promise<Blog[]> 
             blogsRef = query(blogsRef, where('id', '==', filters.id)) as any;
         }
         
-        if (filters.title) {
-            blogsRef = query(blogsRef, where('title', '==', filters.title)) as any;
-        }
+        // if (filters.title) {
+        //     blogsRef = query(blogsRef, where('title', '==', filters.title)) as any;
+        // }
 
         if (filters.author) {
             blogsRef = query(blogsRef, where('author', '==', filters.author)) as any;
@@ -60,13 +60,22 @@ export async function getFilteredBlogs(filters: Partial<Blog>): Promise<Blog[]> 
             return [];
         }
 
-        const blogs: Blog[] = [];
+        let blogs: Blog[] = [];
         snapshot.forEach(doc => {
             blogs.push({
                 ...doc.data()
             } as Blog);
         });
-        console.log("firebase:: "+blogs);
+
+        if (filters.title) {
+			const nameLower = filters.title.toLowerCase();
+			blogs = blogs.filter((blog) => {
+				const blogTitleLower = blog.title.toLowerCase();
+				return blogTitleLower.includes(nameLower);
+			});
+		}
+
+        // console.log("firebase:: "+blogs);
         return blogs;
     } catch (error) {
         console.error('Error fetching filtered blogs:', error);

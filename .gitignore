@@ -7,6 +7,9 @@ build/
 # Uncomment later after website is ready
 # firebase.tsx
 
+# ignore test file
+test.ts
+
 # Ignore environment-specific files
 .env
 
