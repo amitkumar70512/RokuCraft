@@ -12,14 +12,15 @@ export async function addBot(botData: Partial<Bot>): Promise<string> {
 		type DefaultBotData = Omit<Bot, 'coins' | 'doe' | 'doc'>;
 		// Default values
 		const defaultBotData: DefaultBotData = {
-		  id: uuidv4(),
-		  name: '',
-		  image: '',
-		  mobile: '',
-		  email: '',
-		  password: '',
-		  isPremium: false,
-		  isAdmin: false,
+			id: uuidv4(),
+			name: "",
+			userName: "",
+      password: "",
+			image: "",
+			mobile: "",
+			email: "",
+			isPremium: false,
+			isAdmin: false,
 		};
 
 		// Merge input data with default values
