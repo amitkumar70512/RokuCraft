@@ -8,9 +8,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack --mode=development",
     "prod": "webpack --mode=production",
+    "lint": "eslint --fix src",
     "predeploy": "npm run prod",
-    "deploy": "gh-pages -d build",
-    "start": "npm run dev && node server.js"
+    "deploy": "npm run lint && gh-pages -d build",
+    "start": "npm run dev && nodemon server.js"
   },
   "author": "Amit kumar, Shivanand M",
   "license": "ISC",
@@ -32,14 +33,21 @@
     "webpack-cli": "^5.1.4"
   },
   "devDependencies": {
+    "@eslint/js": "^9.5.0",
     "@types/uuid": "^9.0.8",
+    "@typescript-eslint/eslint-plugin": "^7.13.1",
+    "@typescript-eslint/parser": "^7.13.1",
     "compression-webpack-plugin": "^11.0.0",
     "css-loader": "^7.1.2",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.34.3",
     "file-loader": "^6.2.0",
     "gh-pages": "^6.1.1",
+    "globals": "^15.6.0",
     "html-webpack-plugin": "^5.6.0",
     "postcss-loader": "^8.1.1",
     "style-loader": "^4.0.0",
+    "typescript-eslint": "^7.13.1",
     "webpack-bundle-analyzer": "^4.10.1"
   }
 }
