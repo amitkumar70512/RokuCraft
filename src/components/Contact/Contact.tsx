@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
-import { Feedback } from '../../firebase/interface';
-import { getAllFeedbacks, getFilteredFeedbacks, addFeedback } from '../../firebase/feedback';
-
+import React, { useState } from "react";
+import { Feedback } from "../../firebase/interface";
+import {
+	getAllFeedbacks,
+	getFilteredFeedbacks,
+	addFeedback,
+} from "../../firebase/feedback";
 
 const Contact: React.FC = () => {
     const [formData, setFormData] = useState<Feedback>({

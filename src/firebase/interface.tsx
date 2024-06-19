@@ -21,9 +21,10 @@ export interface Feedback {
 export interface Bot {
   id: string;
   name: string;
+  userName: string;
   mobile?: string;
   email: string;
-  image: string;
+  image?: string;
   password: string;
   isPremium: boolean;
   coins: number;
