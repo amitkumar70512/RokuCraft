@@ -24,7 +24,7 @@ export interface Bot {
   userName: string;
   mobile?: string;
   email: string;
-  image: string;
+  image?: string;
   password: string;
   isPremium: boolean;
   coins: number;

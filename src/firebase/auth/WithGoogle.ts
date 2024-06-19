@@ -1,5 +1,5 @@
 import { redirect } from 'react-router-dom';
-import { auth, provider } from './firebase';
+import { auth, provider } from '../firebase';
 import { signInWithPopup, UserCredential } from 'firebase/auth';
 
 export const LoginWithGoogle = async (): Promise<void> => {

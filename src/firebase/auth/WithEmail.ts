@@ -1,12 +1,8 @@
 import { getAuth, createUserWithEmailAndPassword, User } from 'firebase/auth';
-import { initializeApp } from 'firebase/app';
-// import { firebaseConfig } from '../firebase';
 
-// Initialize Firebase
-import {app} from '../firebase';
 // Define the function to create a user
 //export 
-const RegisterWithEmail = async (email: string, password: string): Promise<User> => {
+export const RegisterWithEmail = async (email: string, password: string): Promise<User> => {
     const auth = getAuth();
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
