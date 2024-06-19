@@ -18,7 +18,7 @@ export default [
       'prefer-const': ['error', { 'ignoreReadBeforeAssign': true }],
     
       // Enforce consistent indentation (adjust '2' to your preference)
-      'indent': ['error', 2],
+      'indent': ['error', 4],
     
       // Require semicolons at the end of statements
       'semi': ['error', 'always'],
