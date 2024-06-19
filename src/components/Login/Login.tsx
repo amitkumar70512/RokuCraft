@@ -1,8 +1,149 @@
-import React from "react";
-import { LoginWithGoogle } from "../../firebase/LoginWithGoogle";
+import React, { useState } from "react";
+import { LoginWithGoogle } from "../../firebase/auth/LoginWithGoogle";
+// import { RegisterWithEmail } from "../../firebase/auth/LoginWithEmail";
+import { Bot } from "../../firebase/interface";
+
+/*
+
+Register Flow:
+
+1. User visits the login page.
+2. User fills in the login form and clicks the "Sign Up" button.
+3. Email and password are sent to the Firebase Authentication server.
+4. Firebase Authentication creates a new user account, and returns a user object with id.
+5. Take the user object and store it in the Firestore (bots) database with additional information.
+6. Redirect the user to the home page.
+
+- Password will be stored only in the firebase authentication server. Not the Firestore database (bots).
+
+
+Register form fields:
+- Name
+- Username
+- Email
+- mobile
+- Password
+- Repeat password
+- Terms and conditions checkbox
+
+Fields Generated in background:
+- id (Firebase Authentication)
+- image (default image from Google), allow user to change it later
+- isPremium (default false), true if coins > 0
+- coins (default 0)
+- isAdmin (default false)
+- doc (date of creation)
+- doe (date of expiry) -- 365 days from premium activation
+
+
+*/
+
+const Register: React.FC = () => {
+    const [formData, setFormData] = useState<Bot>({
+        id: "",
+        name: "",
+        userName: "",
+        password: "",
+        mobile: "",
+        email: "",
+        image: "",
+        isPremium: false,
+        coins: 0,
+        isAdmin: false,
+        doc: new Date(),
+        doe: new Date(),
+    })
+
+    const [errors, setErrors] = useState<Partial<Bot>>({});
+
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+        const { name, value } = e.target;
+        setFormData((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
+        setErrors((prevErrors) => ({
+            ...prevErrors,
+            [name]: undefined,
+        }));
+    };
+
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		
+		const validationErrors: Partial<Bot> = {};
+
+		if (!formData.name.trim()) {
+			validationErrors.name = "Name is required";
+		} else if (!/^[A-Za-z]+$/.test(formData.name)) {
+			validationErrors.name = "Name is invalid";
+		}
+        if (!formData.userName.trim()) {
+            validationErrors.userName = "Username is required";
+        } else if (!/^[a-z0-9_.]{3,20}$/.test(formData.userName)) {
+            validationErrors.userName = "Username is invalid";
+        }
+
+		if (!formData.email.trim()) {
+			validationErrors.email = "Email is required";
+		} else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+			validationErrors.email = "Email is invalid";
+		}
+
+        if (!formData.password.trim()) {
+            validationErrors.password = "Password is required";
+        } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(formData.password)) {
+            validationErrors.password = "Password is invalid";
+        }
+
+        /* 
+        if (!formData.mobile.trim()) {
+            validationErrors.mobile = "Mobile is required";
+        } else if (!/^[6-9]\d{9}$/.test(formData.mobile)) {
+            validationErrors.mobile = "Mobile is invalid";
+        } */
+
+		if (Object.keys(validationErrors).length > 0) {
+			setErrors(validationErrors);
+			console.log("errors: " + validationErrors);
+			return;
+		}
+
+		// If there are no validation errors, proceed with form submission logic
+		try {
+            // import { RegisterWithEmail } from "../../firebase/auth/LoginWithEmail";
+            // const user = await RegisterWithEmail(formData.email, formData.password);
+			// console.log("User created successfully:", user);
+
+			// Reset form fields after successful submission
+			// setFormData({ name: "", email: "", message: "", timestamp: new Date() });
+
+			// Optionally show success message to user
+			alert("User created successfully!");
+		} catch (error) {
+			console.error("Error submitting form:", error);
+			// Handle error, e.g., display an error message to the user
+			alert("Failed to submit form. Please try again later.");
+		}
+	};
+
+
+
+
+    return (
+        // add login register form here
+        <>
+        
+        </>
+    );
+}
+
+/*
 
 function Login() {
-    const isLoggedIn = true;
+    const isLoggedIn = false;
     return (
         <div className="container-sm p-5 m-5 bg-light rounded">
                 {
@@ -66,7 +207,7 @@ function Login() {
                     !isLoggedIn &&
                     <>
                     <h1 className="text-center font-weight-bold text-primary">Register</h1>
-                        <form className="p-2">
+                        <form className="p-2" onSubmit={RegisterWithEmail}>
                             <div className="text-center mb-3">
                                 <p>Sign up with:</p>
                                 <button type="button" data-mdb-button-init data-mdb-ripple-init className="btn btn-link btn-floating mx-1">
@@ -131,4 +272,6 @@ function Login() {
     );
 }
 
-export default Login;
+*/
+
+export default Register;

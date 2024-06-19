@@ -14,10 +14,10 @@ export async function addBot(botData: Partial<Bot>): Promise<string> {
 		const defaultBotData: DefaultBotData = {
 			id: uuidv4(),
 			name: "",
+			userName: "",
 			image: "",
 			mobile: "",
 			email: "",
-			password: "",
 			isPremium: false,
 			isAdmin: false,
 		};
