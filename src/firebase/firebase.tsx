@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getStorage } from "firebase/storage";
+import { initializeApp } from 'firebase/app';
+import { getStorage } from 'firebase/storage';
 import { getFirestore } from 'firebase/firestore';
 import { getAnalytics } from "firebase/analytics"; 
 
@@ -8,13 +8,13 @@ import { getAnalytics } from "firebase/analytics";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "AIzaSyAS_-Mhk-IH3aXuBuKR7z7OuZqBarTrCBE",
-    authDomain: "rokucraft-7d86a.firebaseapp.com",
-    projectId: "rokucraft-7d86a",
-    storageBucket: "rokucraft-7d86a.appspot.com",
-    messagingSenderId: "955003890475",
-    appId: "1:955003890475:web:9e1a63ffb6c695c507336e",
-    measurementId: "G-MQDVTF3Y7C"
+  apiKey: 'AIzaSyAS_-Mhk-IH3aXuBuKR7z7OuZqBarTrCBE',
+  authDomain: 'rokucraft-7d86a.firebaseapp.com',
+  projectId: 'rokucraft-7d86a',
+  storageBucket: 'rokucraft-7d86a.appspot.com',
+  messagingSenderId: '955003890475',
+  appId: '1:955003890475:web:9e1a63ffb6c695c507336e',
+  measurementId: 'G-MQDVTF3Y7C',
 };
 
 // Initialize Firebase

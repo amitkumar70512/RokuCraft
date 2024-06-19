@@ -1,4 +1,4 @@
-import { logEvent } from 'firebase/analytics'; 
+import { logEvent } from 'firebase/analytics';
 import {analytics } from '../firebase';
 
 
