@@ -99,6 +99,43 @@ export async function getFilteredBlogs(
     }
 }
 
+
+export async function getBlogById(id: string): Promise<Blog | null> {
+    try {
+        const blogsRef = collection(db, 'blogs');
+        const q = query(blogsRef, where('id', '==', id));
+        const querySnapshot = await getDocs(q);
+
+        if (querySnapshot.empty) {
+            console.log('No matching documents.');
+            return null;
+        }
+
+        const doc = querySnapshot.docs[0];
+        const blogData = doc.data();
+
+        // Assuming Blog interface has properties matching the Firestore document fields
+        const blog: Blog = {
+            id: doc.id,
+            title: blogData.title,
+            author: blogData.author,
+            image: blogData.image,
+            content: blogData.content,
+            summary: blogData.summary,
+            category: blogData.category,
+            doe: blogData.doe,
+            dop: blogData.dop,
+            premium: blogData.premium,
+            coins: blogData.coins
+        };
+
+        return blog;
+    } catch (error) {
+        console.error('Error fetching blog:', error);
+        throw error;
+    }
+}
+
 // Function to add a new blog with default values
 export async function addBlog(blogData: Partial<Blog>): Promise<string> {
     try {

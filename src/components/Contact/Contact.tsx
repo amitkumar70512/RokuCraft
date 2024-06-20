@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Feedback } from "../../firebase/interface";
 import {
-	getAllFeedbacks,
-	getFilteredFeedbacks,
-	addFeedback,
+    getAllFeedbacks,
+    getFilteredFeedbacks,
+    addFeedback,
 } from "../../firebase/feedback";
 
 const Contact: React.FC = () => {
@@ -35,7 +35,7 @@ const Contact: React.FC = () => {
         const validationErrors: Partial<Feedback> = {};
         if (!formData.name.trim()) {
             validationErrors.name = 'Name is required';
-        }else if(!/^[A-Za-z]+$/.test(formData.name)){
+        } else if (!/^[A-Za-z]+$/.test(formData.name)) {
             validationErrors.name = 'Name is invalid';
         }
         if (!formData.email.trim()) {
@@ -50,7 +50,7 @@ const Contact: React.FC = () => {
         // Set errors and stop submission if there are validation errors
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
-            console.log('errors: '+ validationErrors);
+            console.log('errors: ' + validationErrors);
             return;
         }
 

@@ -40,7 +40,6 @@ const AdminEditor: React.FC<AdminEditorProps> = ({ onAddSuccess }) => {
         try {
             const blogToAdd: Blog = {
                 ...blogData as Blog,
-                dop: blogData.dop || new Date(), // Use current date if dop is undefined
             };
 
             const newBlogId = await addBlog(blogToAdd);
