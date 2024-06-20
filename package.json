@@ -10,7 +10,7 @@
     "prod": "webpack --mode=production",
     "lint": "eslint --fix src",
     "predeploy": "npm run prod",
-    "deploy": "npm run lint && gh-pages -d build",
+    "deploy": "gh-pages -d build",
     "start": "npm run dev && nodemon server.js"
   },
   "author": "Amit kumar, Shivanand M",

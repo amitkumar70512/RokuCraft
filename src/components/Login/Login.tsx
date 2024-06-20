@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 interface LoginForm {
   email: string;
@@ -60,7 +62,7 @@ const Login: React.FC = () => {
       // Login User
       // redirect to home page
 
-      // setFormData({ email: "", password: "", rememberMe: true });
+            // setFormData({ email: "", password: "", rememberMe: true });
 
       alert('Logged in successfully!');
     } catch (error) {
@@ -70,7 +72,7 @@ const Login: React.FC = () => {
     }
   };
 
-  const isLoggedIn = false;
+    const isLoggedIn = false;
 
   return (
     <div className="container-sm p-5 m-5 bg-light rounded">

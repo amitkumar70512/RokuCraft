@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { LoginWithGoogle } from '../../firebase/auth/WithGoogle';
 import { RegisterWithEmail } from '../../firebase/auth/WithEmail';
+import React, { useState } from 'react';
+import { LoginWithGoogle } from '../../firebase/auth/WithGoogle';
+import { RegisterWithEmail } from '../../firebase/auth/WithEmail';
 // import { RegisterWithEmail } from "../../firebase/auth/LoginWithEmail";
+import { Bot } from '../../firebase/interface';
+import { Link } from 'react-router-dom';
 import { Bot } from '../../firebase/interface';
 import { Link } from 'react-router-dom';
 
@@ -137,9 +142,9 @@ const Register: React.FC = () => {
         terms: true,
       });
 
-      // store this data into the bots database by adding additional fields
+            // store this data into the bots database by adding additional fields
 
-      // redirect to home page
+            // redirect to home page
 
       // Optionally show success message to user
       alert('User created successfully!');
