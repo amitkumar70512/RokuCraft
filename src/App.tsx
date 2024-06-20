@@ -13,27 +13,27 @@ import Register from './components/Register/Register';
 import IndividualBlog from './components/Blogs/IndividualBlog'; // Adjust path as needed
 
 const App: React.FC = () => {
-  return (
-    <Router>
-      <div className="justify-content-center">
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/blogs" element={<Blogs />} />
-          <Route path="/blog/show/:id" element={<IndividualBlog/>} />
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="*" element={<Home />} />
-          {/* Add more routes as needed */}
-        </Routes>
-        <Footer />
-        <GoToTopButton />
-      </div>
-    </Router>
-  );
+    return (
+        <Router>
+            <div className="justify-content-center">
+                <Header />
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/home" element={<Home />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/blogs" element={<Blogs />} />
+                    <Route path="/blog/show/:id" element={<IndividualBlog/>} />
+                    <Route path="/admin" element={<Admin />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="*" element={<Home />} />
+                    {/* Add more routes as needed */}
+                </Routes>
+                <Footer />
+                <GoToTopButton />
+            </div>
+        </Router>
+    );
 };
 
 export default App;

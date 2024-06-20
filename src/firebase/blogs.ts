@@ -126,7 +126,7 @@ export async function getBlogById(id: string): Promise<Blog | null> {
             doe: blogData.doe,
             dop: blogData.dop,
             premium: blogData.premium,
-            coins: blogData.coins
+            coins: blogData.coins,
         };
 
         return blog;

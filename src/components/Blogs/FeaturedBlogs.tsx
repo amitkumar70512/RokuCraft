@@ -13,58 +13,58 @@ interface FilterProps {
 }
 
 function FeaturedBlogs({ limit = 5, author, coins, dop, premium, isAdmin }: FilterProps) {
-  const [blogData, setBlogData] = useState<Blog[]>([]); // State to hold blog data
+    const [blogData, setBlogData] = useState<Blog[]>([]); // State to hold blog data
 
-  useEffect(() => {
-    const fetchBlogs = async () => {
-      try {
-        // Construct filters based on provided props
-        const filters: FilterProps = {};
+    useEffect(() => {
+        const fetchBlogs = async () => {
+            try {
+                // Construct filters based on provided props
+                const filters: FilterProps = {};
 
-        if (author) {
-          filters.author = author;
-        }
-        if (coins !== undefined) {
-          filters.coins = coins;
-        }
-        if (dop) {
-          filters.dop = dop;
-        }
-        if (premium !== undefined) {
-          filters.premium = premium;
-        }
-        if (isAdmin !== undefined) {
-          filters.isAdmin = isAdmin;
-        }
+                if (author) {
+                    filters.author = author;
+                }
+                if (coins !== undefined) {
+                    filters.coins = coins;
+                }
+                if (dop) {
+                    filters.dop = dop;
+                }
+                if (premium !== undefined) {
+                    filters.premium = premium;
+                }
+                if (isAdmin !== undefined) {
+                    filters.isAdmin = isAdmin;
+                }
 
-        // Fetch filtered blogs from Firestore
-        const data = await getFilteredBlogs(filters, limit);
-        setBlogData(data); // Update state with fetched data
-        console.log('Featured Blogs Fetched Successfully');
-      } catch (error) {
-        console.error('Error fetching blogs:', error);
-      }
-    };
+                // Fetch filtered blogs from Firestore
+                const data = await getFilteredBlogs(filters, limit);
+                setBlogData(data); // Update state with fetched data
+                console.log('Featured Blogs Fetched Successfully');
+            } catch (error) {
+                console.error('Error fetching blogs:', error);
+            }
+        };
 
-    fetchBlogs();
-  }, [author, coins, dop, premium, isAdmin]); // Effect runs when any of these dependencies change
+        fetchBlogs();
+    }, [author, coins, dop, premium, isAdmin]); // Effect runs when any of these dependencies change
 
-  return (
-    <>{
-      (blogData.length > 0) &&
+    return (
+        <>{
+            (blogData.length > 0) &&
       <div className="album py-5 bg-light">
-        <div className="container">
-          {/* Render BlogCard components dynamically */}
-          <div className="row">
-            {blogData.map((blog) => (
-              <BlogCard blog={blog} key={blog.id} />
-            ))}
+          <div className="container">
+              {/* Render BlogCard components dynamically */}
+              <div className="row">
+                  {blogData.map((blog) => (
+                      <BlogCard blog={blog} key={blog.id} />
+                  ))}
+              </div>
           </div>
-        </div>
       </div>
-    }
-    </>
-  );
+        }
+        </>
+    );
 }
 
 export default FeaturedBlogs;

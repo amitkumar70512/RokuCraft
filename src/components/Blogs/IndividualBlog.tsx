@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import { Blog } from '../../firebase/interface';
-import { getBlogById } from "../../firebase/blogs"; // Adjust import path as needed
+import { getBlogById } from '../../firebase/blogs'; // Adjust import path as needed
 
 const IndividualBlog: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -18,7 +18,7 @@ const IndividualBlog: React.FC = () => {
                     const blog = await getBlogById(id);
 
                     setBlogData(blog);
-                    console.log("individual blog: " + blog);
+                    console.log('individual blog: ' + blog);
                 }
                 setLoading(false);
             } catch (error) {
