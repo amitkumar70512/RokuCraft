@@ -10,8 +10,11 @@ import Home from './components/Home/Home';
 import GoToTopButton from './components/GoToTopButton/GoToTopButton';
 import Login from './components/Login/Login';
 import Register from './components/Register/Register';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 
 const App: React.FC = () => {
+  const isLoggedIn = false;
+
   return (
     <Router>
       <div className="justify-content-center">
@@ -21,7 +24,7 @@ const App: React.FC = () => {
           <Route path="/home" element={<Home />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/blogs" element={<Blogs />} />
-          <Route path="/admin" element={<Admin />} />
+          <Route path="/admin" element={<PrivateRoute isLoggedIn={isLoggedIn}><Admin /></PrivateRoute>} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="*" element={<Home />} />
