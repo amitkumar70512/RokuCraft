@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { LoginWithGoogle } from '../../firebase/auth/WithGoogle';
 import { RegisterWithEmail } from '../../firebase/auth/WithEmail';
-// import { RegisterWithEmail } from "../../firebase/auth/LoginWithEmail";
 import { Bot } from '../../firebase/interface';
+import { RegisterForm } from '../Common/interface';
+import { FormErrors } from '../Common/interface';
+import Alerts from '../../components/Common/Alerts';
 import { Link } from 'react-router-dom';
 
 /*
@@ -40,14 +42,6 @@ Fields Generated in background:
 
 */
 
-interface RegisterForm {
-	name: string;
-	userName: string;
-	email: string;
-	password: string;
-	repeatPassword: string;
-	terms: boolean;
-}
 
 const Register: React.FC = () => {
   const [formData, setFormData] = useState<RegisterForm>({
@@ -59,7 +53,12 @@ const Register: React.FC = () => {
     terms: true,
   });
 
-  const [errors, setErrors] = useState<Partial<RegisterForm>>({});
+  const [validationErrors, setValidationErrors] = useState<Partial<RegisterForm>>({});
+  const [responseErrors, setResponseErrors] = useState<Partial<FormErrors>>({
+    isError: true,
+    title: '',
+    message: ''
+  });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -69,7 +68,7 @@ const Register: React.FC = () => {
       ...prevState,
       [name]: value,
     }));
-    setErrors((prevErrors) => ({
+    setValidationErrors((prevErrors) => ({
       ...prevErrors,
       [name]: undefined,
     }));
@@ -77,7 +76,7 @@ const Register: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    console.log(formData)
     const validationErrors: Partial<RegisterForm> = {};
 
     if (!formData.name.trim()) {
@@ -99,11 +98,14 @@ const Register: React.FC = () => {
 
     if (!formData.password.trim()) {
       validationErrors.password = 'Password is required';
-    } else if (
-      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(formData.password)
-    ) {
-      validationErrors.password = 'Password is invalid';
+    } else if (!/^.{5,}$/.test(formData.password)) {
+      validationErrors.password = 'Password must be at least 5 characters long.';
     }
+
+    // will introduce this password restriction in upcoming legal notifications
+    // } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{5,}$/.test(formData.password)) {
+    //   validationErrors.password = 'Must contain at least one lowercase, one uppercase, and one digit, and be at least 5 characters long.';
+    // }
 
     if (!formData.repeatPassword.trim()) {
       validationErrors.repeatPassword = 'Repeat Password is required';
@@ -112,20 +114,31 @@ const Register: React.FC = () => {
     }
 
     if (!formData.terms) {
-      validationErrors.terms = true;
+      validationErrors.terms = 'Please agree to TCs';
       // show error message
     }
 
     if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      console.log('errors: ' + validationErrors);
+      setValidationErrors(validationErrors);
       return;
     }
-
-    // If there are no validation errors, proceed with form submission logic
+    // proceed with form submission logic
     try {
-      const user = await RegisterWithEmail(formData.email, formData.password);
-      console.log('User created successfully:', user);
+      const response = await RegisterWithEmail(formData.email, formData.password);
+      if(response.isSuccess){
+        setResponseErrors({
+          isError: false,
+          title: `Hi ${formData.name}! `,
+          message: " Registered successfully."
+        })
+      }else{
+        setResponseErrors({
+          isError: true,
+          title: "Sorry! ",
+          message: "Trying Refreshing and Register again"
+        })
+      }
+      console.log('User created successfully:', response);
 
       // Reset form fields after successful submission
       setFormData({
@@ -136,13 +149,11 @@ const Register: React.FC = () => {
         repeatPassword: '',
         terms: true,
       });
+      // show loader
+      //1. store this data into the bots database by adding additional fields & localStore & cookies
 
-            // store this data into the bots database by adding additional fields
+      //2. redirect to home page
 
-            // redirect to home page
-
-      // Optionally show success message to user
-      alert('User created successfully!');
     } catch (error) {
       console.error('Error submitting form:', error);
       // Handle error, e.g., display an error message to the user
@@ -157,9 +168,12 @@ const Register: React.FC = () => {
       {!isLoggedIn && (
         <>
           <h1 className="text-center font-weight-bold text-primary">
-						Register
+            Register
           </h1>
-          <form className="p-2" /*onSubmit={RegisterWithEmail} */>
+          {responseErrors && responseErrors.message && (
+            <Alerts isError={responseErrors.isError||true} title={responseErrors.title} message={responseErrors.message} />
+          )}
+          <form className="p-2" onSubmit={handleSubmit}>
             <div className="text-center mb-3">
               <p>Sign up with:</p>
               <button
@@ -203,50 +217,95 @@ const Register: React.FC = () => {
             <p className="text-center">or:</p>
 
             <div data-mdb-input-init className="form-outline mb-4">
-              <input type="text" id="registerName" className="form-control" />
+              <input type="text" id="registerName" className={`form-control ${validationErrors.name ? 'is-invalid' : ''}`}
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required />
               <label className="form-label" htmlFor="registerName">
-								Name
+                Name
               </label>
+              {validationErrors.name && (
+                <div className="invalid-feedback">
+                  {validationErrors.name}
+                </div>
+              )}
             </div>
 
             <div data-mdb-input-init className="form-outline mb-4">
               <input
                 type="text"
+                name="userName"
                 id="registerUsername"
-                className="form-control"
+                className={`form-control ${validationErrors.userName ? 'is-invalid' : ''}`}
+                value={formData.userName}
+                onChange={handleChange}
+                required
               />
               <label className="form-label" htmlFor="registerUsername">
-								Username
+                Username
               </label>
+              {validationErrors.userName && (
+                <div className="invalid-feedback">
+                  {validationErrors.userName}
+                </div>
+              )}
             </div>
 
             <div data-mdb-input-init className="form-outline mb-4">
-              <input type="email" id="registerEmail" className="form-control" />
+              <input type="email" id="registerEmail" className={`form-control ${validationErrors.email ? 'is-invalid' : ''}`}
+                value={formData.email}
+                name="email"
+                onChange={handleChange}
+                required />
               <label className="form-label" htmlFor="registerEmail">
-								Email
+                Email
               </label>
+              {validationErrors.email && (
+                <div className="invalid-feedback">
+                  {validationErrors.email}
+                </div>
+              )}
             </div>
 
             <div data-mdb-input-init className="form-outline mb-4">
               <input
                 type="password"
                 id="registerPassword"
-                className="form-control"
+                className={`form-control ${validationErrors.password ? 'is-invalid' : ''}`}
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
               />
               <label className="form-label" htmlFor="registerPassword">
-								Password
+                Password
               </label>
+              {validationErrors && (
+                <div className="invalid-feedback">
+                  {validationErrors.password}
+                </div>
+              )}
             </div>
 
             <div data-mdb-input-init className="form-outline mb-4">
               <input
                 type="password"
                 id="registerRepeatPassword"
-                className="form-control"
+                className={`form-control ${validationErrors.repeatPassword ? 'is-invalid' : ''}`}
+                name="repeatPassword"
+                value={formData.repeatPassword}
+                onChange={handleChange}
+                required
               />
               <label className="form-label" htmlFor="registerRepeatPassword">
-								Repeat password
+                Repeat password
               </label>
+              {validationErrors.repeatPassword && (
+                <div className="invalid-feedback">
+                  {validationErrors.repeatPassword}
+                </div>
+              )}
             </div>
 
             <div className="form-check d-flex justify-content-center mb-4">
@@ -255,11 +314,11 @@ const Register: React.FC = () => {
                 type="checkbox"
                 value=""
                 id="registerCheck"
-                checked
+                defaultChecked
                 aria-describedby="registerCheckHelpText"
               />
               <label className="form-check-label" htmlFor="registerCheck">
-								I have read and agree to the terms
+                I have read and agree to the terms
               </label>
             </div>
 
@@ -270,13 +329,13 @@ const Register: React.FC = () => {
                 data-mdb-ripple-init
                 className="btn btn-primary btn-block mb-3"
               >
-								Sign up
+                Sign up
               </button>
             </div>
 
             <div className="text-center">
               <p>
-								Already a member? <Link to="/login">Login</Link>
+                Already a member? <Link to="/login">Login</Link>
               </p>
             </div>
           </form>

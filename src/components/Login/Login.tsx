@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Alerts from '../../components/Common/Alerts';
 
+// Define the interfaces for form data and validation errors
 interface LoginForm {
   email: string;
   password: string;
   rememberMe: boolean;
+}
+
+interface FormErrors {
+  message: string;
+  title: string;
 }
 
 const Login: React.FC = () => {
@@ -14,7 +21,8 @@ const Login: React.FC = () => {
     rememberMe: true,
   });
 
-  const [errors, setErrors] = useState<Partial<LoginForm>>({});
+  const [validationErrors, setValidationErrors] = useState<Partial<LoginForm>>({});
+  const [errors, setErrors] = useState<Partial<FormErrors>>({});
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -24,7 +32,7 @@ const Login: React.FC = () => {
       ...prevState,
       [name]: value,
     }));
-    setErrors((prevErrors) => ({
+    setValidationErrors((prevErrors) => ({
       ...prevErrors,
       [name]: undefined,
     }));
@@ -50,40 +58,51 @@ const Login: React.FC = () => {
     }
 
     if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      console.log('errors: ' + validationErrors);
+      setValidationErrors(validationErrors);
       return;
     }
 
-    // If there are no validation errors, proceed with form submission logic
+    // Simulate login logic (replace with actual login API call)
     try {
-      // Login User
-      // redirect to home page
+      // Example: Simulate API call for login
+      // const response = await fetch('/api/login', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify(formData),
+      // });
+      // if (!response.ok) {
+      //   throw new Error('Login failed');
+      // }
 
-            // setFormData({ email: "", password: "", rememberMe: true });
+      // Simulated successful login
+      setFormData({ email: "", password: "", rememberMe: true });
 
-      alert('Logged in successfully!');
+      alert('Logged in successfully!'); // Replace with redirect or other logic
     } catch (error) {
       console.error('Error Logging in:', error);
       // Handle error, e.g., display an error message to the user
-      alert('Failed to Log in. Please try again.');
+      setErrors({ title: 'Login Failed', message: 'Failed to Log in. Please try again.' });
     }
   };
 
-    const isLoggedIn = false;
+  const isLoggedIn = false;
 
   return (
     <div className="container-sm p-5 m-5 bg-light rounded">
       {!isLoggedIn && (
         <>
           <h1 className="text-center font-weight-bold text-primary">Login</h1>
-          <form className="p-2">
+          {errors && errors.message && (
+            <Alerts isError={true} title={errors.title} message={errors.message} />
+          )}
+
+          <form className="p-2" onSubmit={handleSubmit}>
             <div className="text-center mb-3">
               <p>Sign in with:</p>
               <button
                 type="button"
-                data-mdb-button-init
-                data-mdb-ripple-init
                 className="btn btn-link btn-floating mx-1"
               >
                 <i className="fab fa-facebook-f"></i>
@@ -91,8 +110,6 @@ const Login: React.FC = () => {
 
               <button
                 type="button"
-                data-mdb-button-init
-                data-mdb-ripple-init
                 className="btn btn-link btn-floating mx-1"
               >
                 <i className="fab fa-google"></i>
@@ -100,8 +117,6 @@ const Login: React.FC = () => {
 
               <button
                 type="button"
-                data-mdb-button-init
-                data-mdb-ripple-init
                 className="btn btn-link btn-floating mx-1"
               >
                 <i className="fab fa-twitter"></i>
@@ -109,8 +124,6 @@ const Login: React.FC = () => {
 
               <button
                 type="button"
-                data-mdb-button-init
-                data-mdb-ripple-init
                 className="btn btn-link btn-floating mx-1"
               >
                 <i className="fab fa-github"></i>
@@ -120,21 +133,43 @@ const Login: React.FC = () => {
             <p className="text-center">or:</p>
 
             <div data-mdb-input-init className="form-outline mb-4">
-              <input type="email" id="loginName" className="form-control" />
+              <input
+                type="email"
+                id="loginName"
+                name="email"
+                className={`form-control ${validationErrors.email ? 'is-invalid' : ''}`}
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
               <label className="form-label" htmlFor="loginName">
-								Email or username
+                Email or username
               </label>
+              {validationErrors.email && (
+                <div className="invalid-feedback">
+                  {validationErrors.email}
+                </div>
+              )}
             </div>
 
             <div data-mdb-input-init className="form-outline mb-4">
               <input
                 type="password"
                 id="loginPassword"
-                className="form-control"
+                name="password"
+                className={`form-control ${validationErrors.password ? 'is-invalid' : ''}`}
+                value={formData.password}
+                onChange={handleChange}
+                required
               />
               <label className="form-label" htmlFor="loginPassword">
-								Password
+                Password
               </label>
+              {validationErrors.password && (
+                <div className="invalid-feedback">
+                  {validationErrors.password}
+                </div>
+              )}
             </div>
 
             <div className="row mb-4">
@@ -143,13 +178,14 @@ const Login: React.FC = () => {
                   <input
                     className="form-check-input"
                     type="checkbox"
-                    value=""
                     id="loginCheck"
-                    checked
+                    name="rememberMe"
+                    checked={formData.rememberMe}
+                    onChange={handleChange}
                   />
                   <label className="form-check-label" htmlFor="loginCheck">
                     {' '}
-										Remember me{' '}
+                    Remember me{' '}
                   </label>
                 </div>
               </div>
@@ -161,11 +197,9 @@ const Login: React.FC = () => {
 
             <button
               type="submit"
-              data-mdb-button-init
-              data-mdb-ripple-init
               className="btn btn-primary btn-block mb-4"
             >
-							Log in
+              Log in
             </button>
 
             <div className="text-center">
