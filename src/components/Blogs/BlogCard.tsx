@@ -10,6 +10,14 @@ interface BlogCardProps {
 const BlogCard: React.FC<BlogCardProps> = ({ blog, isAdmin = false }) => {
     const navigate = useNavigate();
 
+    const calculateReadingTime = (content: string): number => {
+        // Assuming average reading speed of 200 words per minute
+        const wordsPerMinute = 200;
+        const words = content.split(/\s+/).length;
+        const minutes = words / wordsPerMinute;
+        return Math.ceil(minutes); // Round up to nearest whole number
+    };
+
     const handleClick = () => {
         navigate(`/blog/show/${blog.id}`);
     };
@@ -45,7 +53,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ blog, isAdmin = false }) => {
                             )}
                         </div>
                         <small className="text-muted">{blog.category}</small>
-                        <small className="text-muted">9 mins</small>
+                        <small className="text-muted">{calculateReadingTime(blog.content)} mins</small>
                     </div>
                     <p className="blog-post-meta">
                         {typeof(blog.dop)} by <a href="#">{blog.author}</a>
