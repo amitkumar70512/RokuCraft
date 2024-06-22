@@ -6,12 +6,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack --mode=development",
     "prod": "webpack --mode=production",
     "lint": "eslint --fix src",
     "predeploy": "npm run prod",
     "deploy": "gh-pages -d build",
-    "start": "npm run dev && nodemon server.js"
+    "start": "webpack-dev-server --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js",
+    "dev": "npm run build && node server.js"
   },
   "author": "Amit kumar, Shivanand M",
   "license": "ISC",
@@ -28,16 +29,14 @@
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.22.0",
     "ts-loader": "^9.5.1",
-    "uuid": "^10.0.0",
-    "webpack": "^5.90.1",
-    "webpack-cli": "^5.1.4"
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.5.0",
     "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^7.13.1",
     "@typescript-eslint/parser": "^7.13.1",
-    "compression-webpack-plugin": "^11.0.0",
+    "compression-webpack-plugin": "^11.1.0",
     "css-loader": "^7.1.2",
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.34.3",
@@ -48,6 +47,9 @@
     "postcss-loader": "^8.1.1",
     "style-loader": "^4.0.0",
     "typescript-eslint": "^7.13.1",
-    "webpack-bundle-analyzer": "^4.10.1"
+    "webpack": "^5.92.1",
+    "webpack-bundle-analyzer": "^4.10.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.4"
   }
 }
