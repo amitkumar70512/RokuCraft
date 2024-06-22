@@ -6,8 +6,8 @@ export interface Blog {
   content: string;
   summary: string;
   category: string[];
-  doe: Date;
-  dop: Date;
+  doe: string;
+  dop: string;
   premium: boolean;
   coins: number;
 }

@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Blog } from '../../firebase/interface';
+import ConfirmationDialog from '../Dialog/ConfirmationDialog'; // Adjust the path as needed
 
 interface BlogCardProps {
     blog: Blog;
     isAdmin?: boolean;
+    onDelete?: (blogId: string) => void; // Callback function for delete action
 }
 
-const BlogCard: React.FC<BlogCardProps> = ({ blog, isAdmin = false }) => {
+const BlogCard: React.FC<BlogCardProps> = ({ blog, isAdmin = false, onDelete }) => {
     const navigate = useNavigate();
+
+    const [showConfirmation, setShowConfirmation] = useState(false);
 
     const calculateReadingTime = (content: string): number => {
         // Assuming average reading speed of 200 words per minute
@@ -22,42 +26,72 @@ const BlogCard: React.FC<BlogCardProps> = ({ blog, isAdmin = false }) => {
         navigate(`/blog/show/${blog.id}`);
     };
 
+    const handleDeleteClick = () => {
+        setShowConfirmation(true);
+    };
+
+    const handleCancelDelete = () => {
+        setShowConfirmation(false);
+    };
+
+
+
     return (
-        <div className="col-md-4">
-            <div className="card mb-4 box-shadow">
-                <img
-                    className="card-img-top"
-                    src={blog.image || 'https://via.placeholder.com/200'}
-                    alt="Blog Thumbnail"
-                />
-                <div className="card-body">
-                    <p className="card-text">
-                        {blog.summary}
-                    </p>
-                    <div className="d-flex justify-content-between align-items-center">
-                        <div className="btn-group">
+        <div className="col-md-4 mb-4">
+            <div className="card mb-4 box-shadow" style={{ height: '100%' }}>
+                <a href="#" onClick={handleClick} style={{ display: 'block', height: '70%' }}>
+                    <img
+                        className="card-img-top"
+                        src={blog.image || 'https://via.placeholder.com/200'}
+                        alt="Blog Thumbnail"
+                        style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                    />
+                </a>
+                <div className="card-body d-flex flex-column">
+                    <div>
+                        <h5 className="card-title mt-2">{blog.title}</h5>
+                        <p className="card-text opacity-60 mb-3">{blog.summary}</p>
+                    </div>
+                    <div className="d-flex justify-content-between align-items-center mt-auto">
+                        <div>
                             <button
                                 type="button"
-                                className="btn btn-sm btn-outline-secondary"
+                                className="btn btn-sm btn-outline-secondary me-2"
                                 onClick={handleClick}
                             >
                                 View
                             </button>
                             {isAdmin && (
-                                <button
-                                    type="button"
-                                    className="btn btn-sm btn-outline-secondary"
-                                >
-                                    Edit
-                                </button>
+                                <>
+                                    <button
+                                        type="button"
+                                        className="btn btn-sm btn-outline-secondary me-2"
+                                        onClick={() => console.log(`Editing blog ${blog.id}`)}
+                                    >
+                                        Edit
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="btn btn-sm btn-outline-secondary"
+                                        onClick={handleDeleteClick}
+                                    >
+                                        Delete
+                                    </button>
+                                    <ConfirmationDialog
+                                        id={blog.id}
+                                        show={showConfirmation}
+                                        title="Confirmation"
+                                        message={`Enter 'secret' to confirm delete:`}
+                                        onCancel={handleCancelDelete}
+                                    />
+                                </>
                             )}
                         </div>
-                        <small className="text-muted">{blog.category}</small>
-                        <small className="text-muted">{calculateReadingTime(blog.content)} mins</small>
+                        <div className="text-muted">
+                            <p className="mb-1">by {blog.author}</p>
+                            <p>{calculateReadingTime(blog.content)} mins read</p>
+                        </div>
                     </div>
-                    <p className="blog-post-meta">
-                        {typeof(blog.dop)} by <a href="#">{blog.author}</a>
-                    </p>
                 </div>
             </div>
         </div>

@@ -10,14 +10,14 @@ interface AdminEditorProps {
 
 const AdminEditor: React.FC<AdminEditorProps> = ({ onAddSuccess }) => {
     const [blogData, setBlogData] = useState<Partial<Blog>>({
-        title: '',
-        author: '',
+        title: 'UNKNOWN',
+        author: 'Anonymous',
         image: '',
         content: '',
-        summary: '',
+        summary: 'A short Description about blog',
         category: [],
         premium: false,
-        dop: new Date(), // Date of publication
+        dop: new Date().toISOString(), // Date of publication
     });
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -53,7 +53,7 @@ const AdminEditor: React.FC<AdminEditorProps> = ({ onAddSuccess }) => {
                 summary: '',
                 category: [],
                 premium: false,
-                dop: new Date(), // Reset dop to current date as Date object
+                dop: new Date().toISOString(), // Reset dop to current date as Date object
             });
             // Call parent component callback to handle success (e.g., close modal)
             onAddSuccess();
@@ -129,7 +129,7 @@ const AdminEditor: React.FC<AdminEditorProps> = ({ onAddSuccess }) => {
                 <input
                     type="text"
                     name="dop"
-                    value={blogData.dop?.toISOString()} // Format dop as needed for display
+                    value={blogData.dop} // Format dop as needed for display
                     readOnly // Ensure date is not editable by user
                 />
             </label>

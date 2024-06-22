@@ -9,12 +9,19 @@ const IndividualBlog: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const [blogData, setBlogData] = useState<Blog | null>(null); // State to hold blog data
     const [loading, setLoading] = useState<boolean>(true); // State to manage loading state
+    const [publicationDate,setPublicationDate] = useState<String>('');
 
     useEffect(() => {
         const fetchBlog = async () => {
             try {
                 if (id !== undefined) {
                     const blog = await getBlogById(id);
+                    if (blog?.dop) {
+                        const dateObj = new Date(blog.dop);
+                        if (!isNaN(dateObj.getTime())) {
+                            setPublicationDate( dateObj.toLocaleDateString());
+                        }
+                    }
                     setBlogData(blog);
                 }
                 setLoading(false);
@@ -36,6 +43,7 @@ const IndividualBlog: React.FC = () => {
         return Math.ceil(minutes); // Round up to nearest whole number
     };
 
+
     return (
         <div className="container-fluid pt-5">
             <main role="main" className="container">
@@ -51,6 +59,10 @@ const IndividualBlog: React.FC = () => {
                                 <p className="blog-post-meta">
                                     Written by <a href="#">{blogData.author}</a> | {calculateReadingTime(blogData.content)} min read
                                 </p>
+                                <p className="blog-post-meta">
+                                    Published on: {publicationDate}
+                                </p>
+
                             </div>
                         }
                         {
