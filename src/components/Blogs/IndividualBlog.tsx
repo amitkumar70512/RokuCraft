@@ -7,18 +7,22 @@ import { getBlogById } from '../../firebase/blogs'; // Adjust import path as nee
 
 const IndividualBlog: React.FC = () => {
     const { id } = useParams<{ id: string }>();
-    // const { id } = useParams<RouteParams>();
     const [blogData, setBlogData] = useState<Blog | null>(null); // State to hold blog data
     const [loading, setLoading] = useState<boolean>(true); // State to manage loading state
+    const [publicationDate,setPublicationDate] = useState<String>('');
 
     useEffect(() => {
         const fetchBlog = async () => {
             try {
                 if (id !== undefined) {
                     const blog = await getBlogById(id);
-
+                    if (blog?.dop) {
+                        const dateObj = new Date(blog.dop);
+                        if (!isNaN(dateObj.getTime())) {
+                            setPublicationDate( dateObj.toLocaleDateString());
+                        }
+                    }
                     setBlogData(blog);
-                    console.log('individual blog: ' + blog);
                 }
                 setLoading(false);
             } catch (error) {
@@ -29,7 +33,16 @@ const IndividualBlog: React.FC = () => {
 
         fetchBlog(); // Call fetchBlog when component mounts or id changes
 
-    }, []);
+    }, [id]);
+
+    const calculateReadingTime = (content: string): number => {
+        // Assuming average reading speed of 200 words per minute
+        const wordsPerMinute = 200;
+        const words = content.split(/\s+/).length;
+        const minutes = words / wordsPerMinute;
+        return Math.ceil(minutes); // Round up to nearest whole number
+    };
+
 
     return (
         <div className="container-fluid pt-5">
@@ -44,8 +57,12 @@ const IndividualBlog: React.FC = () => {
                                     <ReactMarkdown>{blogData.content}</ReactMarkdown>
                                 </div>
                                 <p className="blog-post-meta">
-                                    Written by <a href="#">{blogData.author}</a>
+                                    Written by <a href="#">{blogData.author}</a> | {calculateReadingTime(blogData.content)} min read
                                 </p>
+                                <p className="blog-post-meta">
+                                    Published on: {publicationDate}
+                                </p>
+
                             </div>
                         }
                         {
@@ -53,7 +70,6 @@ const IndividualBlog: React.FC = () => {
                             <div className="spinner-border text-secondary" role="status">
                                 <span className="visually-hidden">Loading...</span>
                             </div>
-
                         }
                         {
                             !blogData && !loading &&

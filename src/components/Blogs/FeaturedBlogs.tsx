@@ -7,7 +7,7 @@ interface FilterProps {
   limit?: number; // Number of blogs to be displayed (default: 5)
   author?: string; // Filter by author if provided
   coins?: number; // Filter by number of coins if provided
-  dop?: Date; // Filter by date of publication of blog if provided
+  dop?: string; // Filter by date of publication of blog if provided
   premium?: boolean; // Filter by premium status if provided
   isAdmin?: boolean; // Flag to determine if admin view (default: false)
 }
