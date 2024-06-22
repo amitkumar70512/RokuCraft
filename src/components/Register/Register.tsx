@@ -4,7 +4,7 @@ import { RegisterWithEmail } from '../../firebase/auth/WithEmail';
 import { Bot } from '../../firebase/interface';
 import { RegisterForm } from '../Common/interface';
 import { FormErrors } from '../Common/interface';
-import Alerts from '../../components/Common/Alerts';
+import Alerts from '../Common/Alerts';
 import { Link } from 'react-router-dom';
 
 /*
@@ -42,307 +42,329 @@ Fields Generated in background:
 
 */
 
-
 const Register: React.FC = () => {
-  const [formData, setFormData] = useState<RegisterForm>({
-    name: '',
-    userName: '',
-    email: '',
-    password: '',
-    repeatPassword: '',
-    terms: true,
-  });
+	const [formData, setFormData] = useState<RegisterForm>({
+		name: '',
+		userName: '',
+		email: '',
+		password: '',
+		repeatPassword: '',
+		terms: true,
+	});
 
-  const [validationErrors, setValidationErrors] = useState<Partial<RegisterForm>>({});
-  const [responseErrors, setResponseErrors] = useState<Partial<FormErrors>>({
-    isError: true,
-    title: '',
-    message: ''
-  });
+	const [validationErrors, setValidationErrors] = useState<
+		Partial<RegisterForm>
+	>({});
+	const [responseErrors, setResponseErrors] = useState<Partial<FormErrors>>({
+		isError: true,
+		title: '',
+		message: '',
+	});
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-    setValidationErrors((prevErrors) => ({
-      ...prevErrors,
-      [name]: undefined,
-    }));
-  };
+	const handleChange = (
+		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+	) => {
+		const { name, value } = e.target;
+		setFormData((prevState) => ({
+			...prevState,
+			[name]: value,
+		}));
+		setValidationErrors((prevErrors) => ({
+			...prevErrors,
+			[name]: undefined,
+		}));
+	};
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(formData)
-    const validationErrors: Partial<RegisterForm> = {};
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		console.log(formData);
+		const validationErrors: Partial<RegisterForm> = {};
 
-    if (!formData.name.trim()) {
-      validationErrors.name = 'Name is required';
-    } else if (!/^[A-Za-z]+$/.test(formData.name)) {
-      validationErrors.name = 'Name is invalid';
-    }
-    if (!formData.userName.trim()) {
-      validationErrors.userName = 'Username is required';
-    } else if (!/^[a-z0-9_.]{3,20}$/.test(formData.userName)) {
-      validationErrors.userName = 'Username is invalid';
-    }
+		if (!formData.name.trim()) {
+			validationErrors.name = 'Name is required';
+		} else if (!/^[A-Za-z]+$/.test(formData.name)) {
+			validationErrors.name = 'Name is invalid';
+		}
+		if (!formData.userName.trim()) {
+			validationErrors.userName = 'Username is required';
+		} else if (!/^[a-z0-9_.]{3,20}$/.test(formData.userName)) {
+			validationErrors.userName = 'Username is invalid';
+		}
 
-    if (!formData.email.trim()) {
-      validationErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      validationErrors.email = 'Email is invalid';
-    }
+		if (!formData.email.trim()) {
+			validationErrors.email = 'Email is required';
+		} else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+			validationErrors.email = 'Email is invalid';
+		}
 
-    if (!formData.password.trim()) {
-      validationErrors.password = 'Password is required';
-    } else if (!/^.{5,}$/.test(formData.password)) {
-      validationErrors.password = 'Password must be at least 5 characters long.';
-    }
+		if (!formData.password.trim()) {
+			validationErrors.password = 'Password is required';
+		} else if (!/^.{5,}$/.test(formData.password)) {
+			validationErrors.password =
+				'Password must be at least 5 characters long.';
+		}
 
-    // will introduce this password restriction in upcoming legal notifications
-    // } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{5,}$/.test(formData.password)) {
-    //   validationErrors.password = 'Must contain at least one lowercase, one uppercase, and one digit, and be at least 5 characters long.';
-    // }
+		// will introduce this password restriction in upcoming legal notifications
+		// } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{5,}$/.test(formData.password)) {
+		//   validationErrors.password = 'Must contain at least one lowercase, one uppercase, and one digit, and be at least 5 characters long.';
+		// }
 
-    if (!formData.repeatPassword.trim()) {
-      validationErrors.repeatPassword = 'Repeat Password is required';
-    } else if (formData.repeatPassword !== formData.password) {
-      validationErrors.repeatPassword = 'Passwords do not match';
-    }
+		if (!formData.repeatPassword.trim()) {
+			validationErrors.repeatPassword = 'Repeat Password is required';
+		} else if (formData.repeatPassword !== formData.password) {
+			validationErrors.repeatPassword = 'Passwords do not match';
+		}
 
-    if (!formData.terms) {
-      validationErrors.terms = 'Please agree to TCs';
-      // show error message
-    }
+		if (!formData.terms) {
+			validationErrors.terms = 'Please agree to TCs';
+			// show error message
+		}
 
-    if (Object.keys(validationErrors).length > 0) {
-      setValidationErrors(validationErrors);
-      return;
-    }
-    // proceed with form submission logic
-    try {
-      const response = await RegisterWithEmail(formData.email, formData.password);
-      if(response.isSuccess){
-        setResponseErrors({
-          isError: false,
-          title: `Hi ${formData.name}! `,
-          message: " Registered successfully."
-        })
-      }else{
-        setResponseErrors({
-          isError: true,
-          title: "Sorry! ",
-          message: "Trying Refreshing and Register again"
-        })
-      }
-      console.log('User created successfully:', response);
+		if (Object.keys(validationErrors).length > 0) {
+			setValidationErrors(validationErrors);
+			return;
+		}
+		// proceed with form submission logic
+		try {
+			const response = await RegisterWithEmail(
+				formData.email,
+				formData.password
+			);
+			if (response.isSuccess) {
+				setResponseErrors({
+					isError: false,
+					title: `Hi ${formData.name}! `,
+					message: 'Registered successfully.',
+				});
+			} else {
+				setResponseErrors({
+					isError: true,
+					title: 'Sorry! ',
+					message: 'Trying Refreshing and Register again',
+				});
+			}
+			console.log('User created successfully:', response);
 
-      // Reset form fields after successful submission
-      setFormData({
-        name: '',
-        userName: '',
-        email: '',
-        password: '',
-        repeatPassword: '',
-        terms: true,
-      });
-      // show loader
-      //1. store this data into the bots database by adding additional fields & localStore & cookies
+			// Reset form fields after successful submission
+			setFormData({
+				name: '',
+				userName: '',
+				email: '',
+				password: '',
+				repeatPassword: '',
+				terms: true,
+			});
+			// show loader
+			//1. store this data into the bots database by adding additional fields & localStore & cookies
 
-      //2. redirect to home page
+			//2. redirect to home page
+		} catch (error) {
+			console.error('Error submitting form:', error);
+			// Handle error, e.g., display an error message to the user
+			alert('Failed to submit form. Please try again later.');
+		}
+	};
 
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      // Handle error, e.g., display an error message to the user
-      alert('Failed to submit form. Please try again later.');
-    }
-  };
+	const isLoggedIn = false;
 
-  const isLoggedIn = false;
+	return (
+		<div className='container-sm p-5 m-5 bg-light rounded'>
+			{!isLoggedIn && (
+				<>
+					<h1 className='text-center font-weight-bold text-primary'>
+						Register
+					</h1>
+					{responseErrors && responseErrors.message && (
+						<Alerts
+							isError={responseErrors.isError || false}
+							title={responseErrors.title}
+							message={responseErrors.message}
+						/>
+					)}
+					<form className='p-2' onSubmit={handleSubmit}>
+						<div className='text-center mb-3'>
+							<p>Sign up with:</p>
+							<button
+								type='button'
+								data-mdb-button-init
+								data-mdb-ripple-init
+								className='btn btn-link btn-floating mx-1'
+							>
+								<i className='fab fa-facebook-f'></i>
+							</button>
 
-  return (
-    <div className="container-sm p-5 m-5 bg-light rounded">
-      {!isLoggedIn && (
-        <>
-          <h1 className="text-center font-weight-bold text-primary">
-            Register
-          </h1>
-          {responseErrors && responseErrors.message && (
-            <Alerts isError={responseErrors.isError||true} title={responseErrors.title} message={responseErrors.message} />
-          )}
-          <form className="p-2" onSubmit={handleSubmit}>
-            <div className="text-center mb-3">
-              <p>Sign up with:</p>
-              <button
-                type="button"
-                data-mdb-button-init
-                data-mdb-ripple-init
-                className="btn btn-link btn-floating mx-1"
-              >
-                <i className="fab fa-facebook-f"></i>
-              </button>
+							<button
+								type='button'
+								onClick={LoginWithGoogle}
+								data-mdb-button-init
+								data-mdb-ripple-init
+								className='btn btn-link btn-floating mx-1'
+							>
+								<i className='fab fa-google'></i>
+							</button>
 
-              <button
-                type="button"
-                onClick={LoginWithGoogle}
-                data-mdb-button-init
-                data-mdb-ripple-init
-                className="btn btn-link btn-floating mx-1"
-              >
-                <i className="fab fa-google"></i>
-              </button>
+							<button
+								type='button'
+								data-mdb-button-init
+								data-mdb-ripple-init
+								className='btn btn-link btn-floating mx-1'
+							>
+								<i className='fab fa-twitter'></i>
+							</button>
 
-              <button
-                type="button"
-                data-mdb-button-init
-                data-mdb-ripple-init
-                className="btn btn-link btn-floating mx-1"
-              >
-                <i className="fab fa-twitter"></i>
-              </button>
+							<button
+								type='button'
+								data-mdb-button-init
+								data-mdb-ripple-init
+								className='btn btn-link btn-floating mx-1'
+							>
+								<i className='fab fa-github'></i>
+							</button>
+						</div>
 
-              <button
-                type="button"
-                data-mdb-button-init
-                data-mdb-ripple-init
-                className="btn btn-link btn-floating mx-1"
-              >
-                <i className="fab fa-github"></i>
-              </button>
-            </div>
+						<p className='text-center'>or:</p>
 
-            <p className="text-center">or:</p>
+						<div data-mdb-input-init className='form-outline mb-4'>
+							<input
+								type='text'
+								id='registerName'
+								className={`form-control ${
+									validationErrors.name ? 'is-invalid' : ''
+								}`}
+								name='name'
+								value={formData.name}
+								onChange={handleChange}
+								required
+							/>
+							<label className='form-label' htmlFor='registerName'>
+								Name
+							</label>
+							{validationErrors.name && (
+								<div className='invalid-feedback'>{validationErrors.name}</div>
+							)}
+						</div>
 
-            <div data-mdb-input-init className="form-outline mb-4">
-              <input type="text" id="registerName" className={`form-control ${validationErrors.name ? 'is-invalid' : ''}`}
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required />
-              <label className="form-label" htmlFor="registerName">
-                Name
-              </label>
-              {validationErrors.name && (
-                <div className="invalid-feedback">
-                  {validationErrors.name}
-                </div>
-              )}
-            </div>
+						<div data-mdb-input-init className='form-outline mb-4'>
+							<input
+								type='text'
+								name='userName'
+								id='registerUsername'
+								className={`form-control ${
+									validationErrors.userName ? 'is-invalid' : ''
+								}`}
+								value={formData.userName}
+								onChange={handleChange}
+								required
+							/>
+							<label className='form-label' htmlFor='registerUsername'>
+								Username
+							</label>
+							{validationErrors.userName && (
+								<div className='invalid-feedback'>
+									{validationErrors.userName}
+								</div>
+							)}
+						</div>
 
-            <div data-mdb-input-init className="form-outline mb-4">
-              <input
-                type="text"
-                name="userName"
-                id="registerUsername"
-                className={`form-control ${validationErrors.userName ? 'is-invalid' : ''}`}
-                value={formData.userName}
-                onChange={handleChange}
-                required
-              />
-              <label className="form-label" htmlFor="registerUsername">
-                Username
-              </label>
-              {validationErrors.userName && (
-                <div className="invalid-feedback">
-                  {validationErrors.userName}
-                </div>
-              )}
-            </div>
+						<div data-mdb-input-init className='form-outline mb-4'>
+							<input
+								type='email'
+								id='registerEmail'
+								className={`form-control ${
+									validationErrors.email ? 'is-invalid' : ''
+								}`}
+								value={formData.email}
+								name='email'
+								onChange={handleChange}
+								required
+							/>
+							<label className='form-label' htmlFor='registerEmail'>
+								Email
+							</label>
+							{validationErrors.email && (
+								<div className='invalid-feedback'>{validationErrors.email}</div>
+							)}
+						</div>
 
-            <div data-mdb-input-init className="form-outline mb-4">
-              <input type="email" id="registerEmail" className={`form-control ${validationErrors.email ? 'is-invalid' : ''}`}
-                value={formData.email}
-                name="email"
-                onChange={handleChange}
-                required />
-              <label className="form-label" htmlFor="registerEmail">
-                Email
-              </label>
-              {validationErrors.email && (
-                <div className="invalid-feedback">
-                  {validationErrors.email}
-                </div>
-              )}
-            </div>
+						<div data-mdb-input-init className='form-outline mb-4'>
+							<input
+								type='password'
+								id='registerPassword'
+								className={`form-control ${
+									validationErrors.password ? 'is-invalid' : ''
+								}`}
+								name='password'
+								value={formData.password}
+								onChange={handleChange}
+								required
+							/>
+							<label className='form-label' htmlFor='registerPassword'>
+								Password
+							</label>
+							{validationErrors && (
+								<div className='invalid-feedback'>
+									{validationErrors.password}
+								</div>
+							)}
+						</div>
 
-            <div data-mdb-input-init className="form-outline mb-4">
-              <input
-                type="password"
-                id="registerPassword"
-                className={`form-control ${validationErrors.password ? 'is-invalid' : ''}`}
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-              />
-              <label className="form-label" htmlFor="registerPassword">
-                Password
-              </label>
-              {validationErrors && (
-                <div className="invalid-feedback">
-                  {validationErrors.password}
-                </div>
-              )}
-            </div>
+						<div data-mdb-input-init className='form-outline mb-4'>
+							<input
+								type='password'
+								id='registerRepeatPassword'
+								className={`form-control ${
+									validationErrors.repeatPassword ? 'is-invalid' : ''
+								}`}
+								name='repeatPassword'
+								value={formData.repeatPassword}
+								onChange={handleChange}
+								required
+							/>
+							<label className='form-label' htmlFor='registerRepeatPassword'>
+								Repeat password
+							</label>
+							{validationErrors.repeatPassword && (
+								<div className='invalid-feedback'>
+									{validationErrors.repeatPassword}
+								</div>
+							)}
+						</div>
 
-            <div data-mdb-input-init className="form-outline mb-4">
-              <input
-                type="password"
-                id="registerRepeatPassword"
-                className={`form-control ${validationErrors.repeatPassword ? 'is-invalid' : ''}`}
-                name="repeatPassword"
-                value={formData.repeatPassword}
-                onChange={handleChange}
-                required
-              />
-              <label className="form-label" htmlFor="registerRepeatPassword">
-                Repeat password
-              </label>
-              {validationErrors.repeatPassword && (
-                <div className="invalid-feedback">
-                  {validationErrors.repeatPassword}
-                </div>
-              )}
-            </div>
+						<div className='form-check d-flex justify-content-center mb-4'>
+							<input
+								className='form-check-input me-2'
+								type='checkbox'
+								value=''
+								id='registerCheck'
+								defaultChecked
+								aria-describedby='registerCheckHelpText'
+							/>
+							<label className='form-check-label' htmlFor='registerCheck'>
+								I have read and agree to the terms
+							</label>
+						</div>
 
-            <div className="form-check d-flex justify-content-center mb-4">
-              <input
-                className="form-check-input me-2"
-                type="checkbox"
-                value=""
-                id="registerCheck"
-                defaultChecked
-                aria-describedby="registerCheckHelpText"
-              />
-              <label className="form-check-label" htmlFor="registerCheck">
-                I have read and agree to the terms
-              </label>
-            </div>
+						<div className='text-center'>
+							<button
+								type='submit'
+								data-mdb-button-init
+								data-mdb-ripple-init
+								className='btn btn-primary btn-block mb-3'
+							>
+								Sign up
+							</button>
+						</div>
 
-            <div className="text-center">
-              <button
-                type="submit"
-                data-mdb-button-init
-                data-mdb-ripple-init
-                className="btn btn-primary btn-block mb-3"
-              >
-                Sign up
-              </button>
-            </div>
-
-            <div className="text-center">
-              <p>
-                Already a member? <Link to="/login">Login</Link>
-              </p>
-            </div>
-          </form>
-        </>
-      )}
-    </div>
-  );
+						<div className='text-center'>
+							<p>
+								Already a member? <Link to='/login'>Login</Link>
+							</p>
+						</div>
+					</form>
+				</>
+			)}
+		</div>
+	);
 };
 
 export default Register;
