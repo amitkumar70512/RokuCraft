@@ -11,8 +11,7 @@
     "predeploy": "npm run prod",
     "deploy": "gh-pages -d build",
     "start": "webpack-dev-server --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js",
-    "dev": "npm run build && node server.js"
+    "build": "webpack --config webpack.prod.js"
   },
   "author": "Amit kumar, Shivanand M",
   "license": "ISC",
