@@ -9,6 +9,7 @@
     "lint": "eslint --fix src",
     "predeploy": "npm run prod",
     "deploy": "gh-pages -d build",
+    "prod": "webpack --mode=production",
     "start": "webpack-dev-server --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js"
   },
