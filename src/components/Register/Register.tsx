@@ -1,12 +1,7 @@
 import React, { useState } from 'react';
 import { LoginWithGoogle } from '../../firebase/auth/WithGoogle';
 import { RegisterWithEmail } from '../../firebase/auth/WithEmail';
-import React, { useState } from 'react';
-import { LoginWithGoogle } from '../../firebase/auth/WithGoogle';
-import { RegisterWithEmail } from '../../firebase/auth/WithEmail';
 // import { RegisterWithEmail } from "../../firebase/auth/LoginWithEmail";
-import { Bot } from '../../firebase/interface';
-import { Link } from 'react-router-dom';
 import { Bot } from '../../firebase/interface';
 import { Link } from 'react-router-dom';
 
