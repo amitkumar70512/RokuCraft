@@ -1,4 +1,5 @@
 import { db } from './firebase';
+import { getDoc, doc, deleteDoc,updateDoc, DocumentData } from 'firebase/firestore';
 import { Blog } from './interface';
 import {
     collection,
@@ -11,6 +12,8 @@ import {
     orderBy,
 } from 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid'; // Import uuidv4 to generate random IDs
+
+
 
 // Function to get all blogs
 export async function getAllBlogs(): Promise<Blog[]> {
@@ -148,19 +151,20 @@ export async function addBlog(blogData: Partial<Blog>): Promise<string> {
         author: 'Anonymous',
         image: '',
         content: '',
-        summary: '',
+        summary: 'A short Description about blog',
         category: [],
         premium: false,
     };
 
     // Merge input data with default values
-    const mergedBlogData: Blog = {
-        ...defaultBlogData,
-        ...blogData,
-        doe: blogData.doe || new Date(), // Use current date if not provided
-        dop: blogData.dop || new Date(), // Use current date if not provided
-        coins: blogData.coins || 0, // Default to 0 if not provided
-    };
+const mergedBlogData: Blog = {
+    ...defaultBlogData,
+    ...blogData,
+    doe: blogData.doe || new Date().toISOString(), // Use current date in ISO string format if not provided
+    dop: blogData.dop || new Date().toISOString(), // Use current date in ISO string format if not provided
+    coins: blogData.coins || 0, // Default to 0 if not provided
+};
+
 
     // Add blog to Firestore
     const blogsCollection = collection(db, 'blogs');
@@ -177,5 +181,76 @@ export async function addBlog(blogData: Partial<Blog>): Promise<string> {
     } catch (error) {
         console.error('Error adding blog:', error);
         throw error;
+    }
+}
+
+
+interface responseType {
+    isSuccess: boolean;
+    blogId?: string; // Optional since blogId might not be used in all cases
+    errorMessage?: string;
+}
+
+// Function to delete a blog by its internal ID field and return success status
+export async function deleteBlogById(blogId: string): Promise<responseType> {
+    const response: responseType = {
+        isSuccess: false,
+        blogId: blogId
+    };
+    try {
+        // Query the 'blogs' collection to find the document where 'id' field matches 'blogId'
+        const blogsRef = collection(db, 'blogs');
+        const q = query(blogsRef, where('id', '==', blogId));
+        const querySnapshot = await getDocs(q);
+
+        // Check if there is a matching document
+        if (querySnapshot.empty) {
+            console.log(`Blog with ID ${blogId} does not exist.`);
+            response.isSuccess = false;// false if no matching document found
+            return response;
+        }
+
+        // Assuming there's only one matching document, delete it
+        const docToDelete = querySnapshot.docs[0];
+        await deleteDoc(docToDelete.ref);
+        console.log(`Blog with ID ${blogId} deleted successfully.`);
+        response.isSuccess = true;
+        return response;
+    } catch (error) {
+        console.error('Error deleting blog:', error);
+        response.isSuccess = false;
+        return response;
+    }
+}
+
+// Function to edit an existing blog by ID and return success status
+export async function editBlogById(id: string, updatedData: Partial<Blog>): Promise<responseType> {
+    const response: responseType = {
+        isSuccess: false,
+    };
+
+    try {
+        const blogRef = doc(db, 'blogs', id);
+        const blogDoc = await getDoc(blogRef);
+
+        if (!blogDoc.exists()) {
+            response.errorMessage = `Blog with ID ${id} does not exist.`;
+            return response;
+        }
+
+        const currentData = blogDoc.data() as Blog;
+        const newData: DocumentData = {
+            ...currentData,
+            ...updatedData,
+        };
+
+        await updateDoc(blogRef, newData);
+        console.log(`Blog with ID ${id} updated successfully.`);
+        response.isSuccess = true;
+        return response;
+    } catch (error) {
+        console.error('Error updating blog:', error);
+        response.errorMessage = `Error updating blog: ${error}`;
+        return response;
     }
 }

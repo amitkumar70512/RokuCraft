@@ -6,12 +6,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "prod": "webpack --mode=production",
     "lint": "eslint --fix src",
     "predeploy": "npm run prod",
     "deploy": "gh-pages -d build",
     "prod": "webpack --mode=production",
     "start": "webpack-dev-server --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js"
+    "build": "webpack --config webpack.prod.js",
+    "dev": "npm run build && node server.js"
   },
   "author": "Amit kumar, Shivanand M",
   "license": "ISC",
@@ -24,6 +26,7 @@
     "nodemon": "^3.1.4",
     "quill": "^2.0.2",
     "react": "^18.2.0",
+    "react-bootstrap": "^2.10.3",
     "react-dom": "^18.2.0",
     "react-markdown": "^9.0.1",
     "react-quill": "^2.0.0",
