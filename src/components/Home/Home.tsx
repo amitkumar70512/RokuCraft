@@ -2,17 +2,19 @@ import ContinueReading from '../Blogs/ContinueReading';
 import LatestBlogs from '../Blogs/LatestBlogs';
 import React from 'react';
 import FeaturedBlogs from '../Blogs/FeaturedBlogs';
-import Sidebar from '../Sidebar/Sidebar';
+import Sidebar from '../Common/Sidebar/Sidebar';
 import Blogs from '../Blogs/Blogs';
+import SearchBar from '../../components/Common/Headers/SearchBar';
 
 
 function Home() {
     return (
         <div className="m-5">
+            <SearchBar/>
             <ContinueReading />
             <LatestBlogs />
             <h2>Featured Blogs</h2>
-            <FeaturedBlogs limit={3}/>
+            <FeaturedBlogs limit={3} />
             <div className="row">
                 <Sidebar />
                 <main role="main" className="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">

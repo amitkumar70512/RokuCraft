@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Blog } from '../../firebase/interface';
-import ConfirmationDialog from '../Dialog/ConfirmationDialog'; // Adjust the path as needed
+import ConfirmationDialog from '../Common/Dialog/ConfirmationDialog'; // Adjust the path as needed
 
 interface BlogCardProps {
     blog: Blog;
@@ -24,7 +24,6 @@ const BlogCard: React.FC<BlogCardProps> = ({ blog, isAdmin = false, onDelete }) 
 
     const handleClick = () => {
         navigate(`/blog/show/${blog.blogId}`);
-        console.log(`Viewing blog ${blog.blogId}`);
     };
 
     const handleDeleteClick = () => {

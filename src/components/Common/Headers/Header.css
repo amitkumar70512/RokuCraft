@@ -1,0 +1,71 @@
+/* Header styles for a nice UI and responsiveness */
+
+.navbar {
+    background-color: #ffffff; /* White background */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
+    padding: 10px 0; /* Padding top and bottom */
+    position: relative; /* Relative positioning for child elements */
+}
+
+.navbar-brand {
+    font-size: 1.5rem; /* Larger font size for brand/logo */
+    color: #333; /* Text color */
+}
+
+.navbar-toggler {
+    border: none; /* Remove border from toggler */
+}
+
+.navbar-toggler-icon {
+    background-color: #333; /* Toggler icon color */
+}
+
+.navbar-nav .nav-link {
+    color: #333; /* Link text color */
+    margin-right: 10px; /* Space between links */
+}
+
+.navbar-nav .nav-link:hover {
+    color: #007bff; /* Hover color (blue) */
+}
+
+.myProfile {
+    position: relative; /* Relative positioning */
+    cursor: pointer; /* Pointer cursor on hover */
+    margin-left: auto; /* Align to the right */
+    display: flex; /* Use flexbox for centering */
+    align-items: center; /* Center items vertically */
+}
+
+.profile-icon {
+    font-size: 1.5rem; /* Larger icon size */
+    color: #333; /* Icon color */
+    margin-left: 10px; /* Space between icon and text */
+}
+
+/* Styles for MyProfileSubSection positioning */
+.myProfile:hover .myProfileSubSection {
+    display: block; /* Show on hover */
+}
+
+.myProfileSubSection {
+    display: none; /* Hide by default */
+    position: absolute; /* Position absolute to overlay */
+    top: 50px; /* Adjust top position as needed */
+    right: 10px; /* Adjust right position as needed */
+    background-color: #ffffff; /* White background */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
+    padding: 10px; /* Padding for content */
+    z-index: 1000; /* Ensure it's above other content */
+    min-width: 200px; /* Minimum width */
+}
+
+.myProfileSubSection:before {
+    content: ''; /* Empty content */
+    position: absolute; /* Position absolute */
+    top: -10px; /* Adjust position to top */
+    right: 20px; /* Adjust position to right */
+    border-width: 0 10px 10px; /* Border width */
+    border-style: solid; /* Border style */
+    border-color: transparent transparent #ffffff; /* Border color */
+}

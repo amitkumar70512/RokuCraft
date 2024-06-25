@@ -1,23 +1,23 @@
 // app.tsx
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Header from './components/Headers/Header';
+import Header from './components/Common/Headers/Header';
 import Blogs from './components/Blogs/Blogs';
-import Admin from './components/Admin/Admin';
-import Footer from './components/Footer/Footer';
+import Admin from './components/Users/Admin/Admin';
+import Footer from './components/Common/Footer/Footer';
 import Contact from './components/Contact/Contact';
 import Home from './components/Home/Home';
-import GoToTopButton from './components/GoToTopButton/GoToTopButton';
+import GoToTopButton from './components/Common/GoToTopButton/GoToTopButton';
 import Login from './components/Login/Login';
 import Register from './components/Register/Register';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import IndividualBlog from './components/Blogs/IndividualBlog'; // Adjust path as needed
-import BotProfile from './components/Bot/BotProfile';
+import BotProfile from './components/Users/MyProfile/MyProfile';
 
 const App: React.FC = () => {
     const isLoggedIn = false;
 
-  return (
+    return (
         <Router>
             <div className="justify-content-center">
                 <Header />
@@ -26,9 +26,9 @@ const App: React.FC = () => {
                     <Route path="/home" element={<Home />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/blogs" element={<Blogs />} />
-                    <Route path="/blog/show/:blogId" element={<IndividualBlog/>} />
+                    <Route path="/blog/show/:blogId" element={<IndividualBlog />} />
                     <Route path="/admin" element={<PrivateRoute ><Admin /></PrivateRoute>} />
-                    <Route path="/profile/:userName" element={<BotProfile/>} />
+                    <Route path="/profile/:userName" element={<BotProfile />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="*" element={<Home />} />

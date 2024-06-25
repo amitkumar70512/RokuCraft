@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
-import Sidebar from '../../components/Sidebar/Sidebar';
+import Sidebar from '../Common/Sidebar/Sidebar';
 import { Blog } from '../../firebase/interface';
 import { getBlogById } from '../../firebase/blogs'; // Adjust import path as needed
+import UserSubSection from '../Users/MyProfileSubSection/MyProfileSubSection';
 
 const IndividualBlog: React.FC = () => {
+    const navigate = useNavigate();
     const { blogId } = useParams<{ blogId: string }>();
     const [blogData, setBlogData] = useState<Blog | null>(null); // State to hold blog data
     const [loading, setLoading] = useState<boolean>(true); // State to manage loading state
-    const [publicationDate,setPublicationDate] = useState<String>('');
+    const [publicationDate, setPublicationDate] = useState<String>('');
 
     useEffect(() => {
         const fetchBlog = async () => {
@@ -19,10 +21,10 @@ const IndividualBlog: React.FC = () => {
                     if (blog?.date_of_publication) {
                         const dateObj = new Date(blog.date_of_publication);
                         if (!isNaN(dateObj.getTime())) {
-                            setPublicationDate( dateObj.toLocaleDateString());
+                            setPublicationDate(dateObj.toLocaleDateString());
                         }
                     }
-                    if(blogId)
+                    if (blogId)
                         localStorage.setItem('blogId', blogId);
                     setBlogData(blog);
                 }
@@ -45,7 +47,10 @@ const IndividualBlog: React.FC = () => {
         return Math.ceil(minutes); // Round up to nearest whole number
     };
 
-    
+    const handleClick = () => {
+        navigate(`/profile/${blogData?.author}`);
+    };
+
     return (
         <div className="container-fluid pt-5">
             <main role="main" className="container">
@@ -59,13 +64,14 @@ const IndividualBlog: React.FC = () => {
                                     <ReactMarkdown>{blogData.content}</ReactMarkdown>
                                 </div>
                                 <p className="blog-post-meta">
-                                    Written by <a href="#">{blogData.author}</a> | {calculateReadingTime(blogData.content)} min read
+                                    Written by <a href="#" onClick={handleClick}>{blogData.author}</a> | {calculateReadingTime(blogData.content)} min read
                                 </p>
                                 <p className="blog-post-meta">
                                     Published on: {publicationDate}
                                 </p>
 
                             </div>
+
                         }
                         {
                             loading && !blogData &&

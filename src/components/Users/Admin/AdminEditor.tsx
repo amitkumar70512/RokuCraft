@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // Import styles for react-quill
-import { addBlog } from '../../firebase/blogs'; // Replace with actual path to your blogService
-import { Blog } from '../../firebase/interface'; // Replace with actual path to your Blog interface
+import { addBlog } from '../../../firebase/blogs'; // Replace with actual path to your blogService
+import { Blog } from '../../../firebase/interface'; // Replace with actual path to your Blog interface
 
 interface AdminEditorProps {
     onAddSuccess: () => void;
 }
 
 const AdminEditor: React.FC<AdminEditorProps> = ({ onAddSuccess }) => {
+    
     const [blogData, setBlogData] = useState<Partial<Blog>>({
         title: 'UNKNOWN',
-        author: 'Anonymous',
+        author: 'Anonyms',
         image: '',
         content: '',
         summary: 'A short Description about blog',
@@ -47,8 +48,8 @@ const AdminEditor: React.FC<AdminEditorProps> = ({ onAddSuccess }) => {
             // Clear form fields or reset state
             setBlogData({
                 title: '',
-                author: '',
                 image: '',
+                author: '',
                 content: '',
                 summary: '',
                 category: [],
