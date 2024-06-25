@@ -12,6 +12,7 @@ import Login from './components/Login/Login';
 import Register from './components/Register/Register';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import IndividualBlog from './components/Blogs/IndividualBlog'; // Adjust path as needed
+import BotProfile from './components/Bot/BotProfile';
 
 const App: React.FC = () => {
     const isLoggedIn = false;
@@ -27,6 +28,7 @@ const App: React.FC = () => {
                     <Route path="/blogs" element={<Blogs />} />
                     <Route path="/blog/show/:blogId" element={<IndividualBlog/>} />
                     <Route path="/admin" element={<PrivateRoute ><Admin /></PrivateRoute>} />
+                    <Route path="/profile/:userName" element={<BotProfile/>} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="*" element={<Home />} />

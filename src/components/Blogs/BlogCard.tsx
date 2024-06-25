@@ -23,7 +23,8 @@ const BlogCard: React.FC<BlogCardProps> = ({ blog, isAdmin = false, onDelete }) 
     };
 
     const handleClick = () => {
-        navigate(`/blog/show/${blog.id}`);
+        navigate(`/blog/show/${blog.blogId}`);
+        console.log(`Viewing blog ${blog.blogId}`);
     };
 
     const handleDeleteClick = () => {
@@ -66,7 +67,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ blog, isAdmin = false, onDelete }) 
                                     <button
                                         type="button"
                                         className="btn btn-sm btn-outline-secondary me-2"
-                                        onClick={() => console.log(`Editing blog ${blog.id}`)}
+                                        onClick={() => console.log(`Editing blog ${blog.blogId}`)}
                                     >
                                         Edit
                                     </button>
@@ -78,7 +79,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ blog, isAdmin = false, onDelete }) 
                                         Delete
                                     </button>
                                     <ConfirmationDialog
-                                        id={blog.id}
+                                        id={blog.blogId}
                                         show={showConfirmation}
                                         title="Confirmation"
                                         message={`Enter 'secret' to confirm delete:`}

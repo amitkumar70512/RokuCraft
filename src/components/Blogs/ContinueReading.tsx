@@ -13,7 +13,7 @@ export default function ContinueReading() {
                 const blogId = await localStorage.getItem('blogId') || null;
                 if (blogId != null) {
                     const Blog = await getFilteredBlogs({
-                        id: blogId,
+                        blogId: blogId,
                     });
                     setBlogs(Blog.at(0));
                 }
@@ -26,7 +26,7 @@ export default function ContinueReading() {
     }, []);
 
     const handleClick = () => {
-        navigate(`/blog/show/${Blog?.id}`);
+        navigate(`/blog/show/${Blog?.blogId}`);
     };
 
     return (

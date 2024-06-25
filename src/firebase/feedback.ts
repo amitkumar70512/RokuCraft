@@ -101,7 +101,7 @@ export async function addFeedback(
 		const mergedBlogData: Feedback = {
 			...defaultBlogData,
 			...feedbackData,
-			timestamp: feedbackData.timestamp || new Date(), // Use current date if not provided
+			timestamp: feedbackData.timestamp || new Date().toISOString(), // Use current date if not provided
 		};
 
 		// Add Feedback to Firestore
