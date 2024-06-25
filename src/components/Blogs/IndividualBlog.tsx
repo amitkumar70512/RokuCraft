@@ -6,7 +6,7 @@ import { Blog } from '../../firebase/interface';
 import { getBlogById } from '../../firebase/blogs'; // Adjust import path as needed
 
 const IndividualBlog: React.FC = () => {
-    const { id } = useParams<{ id: string }>();
+    const { blogId } = useParams<{ blogId: string }>();
     const [blogData, setBlogData] = useState<Blog | null>(null); // State to hold blog data
     const [loading, setLoading] = useState<boolean>(true); // State to manage loading state
     const [publicationDate,setPublicationDate] = useState<String>('');
@@ -14,14 +14,16 @@ const IndividualBlog: React.FC = () => {
     useEffect(() => {
         const fetchBlog = async () => {
             try {
-                if (id !== undefined) {
-                    const blog = await getBlogById(id);
+                if (blogId !== undefined) {
+                    const blog = await getBlogById(blogId);
                     if (blog?.dop) {
                         const dateObj = new Date(blog.dop);
                         if (!isNaN(dateObj.getTime())) {
                             setPublicationDate( dateObj.toLocaleDateString());
                         }
                     }
+                    if(blogId)
+                        localStorage.setItem('blogId', blogId);
                     setBlogData(blog);
                 }
                 setLoading(false);
@@ -31,9 +33,9 @@ const IndividualBlog: React.FC = () => {
             }
         };
 
-        fetchBlog(); // Call fetchBlog when component mounts or id changes
+        fetchBlog(); // Call fetchBlog when component mounts or blogId changes
 
-    }, [id]);
+    }, [blogId]);
 
     const calculateReadingTime = (content: string): number => {
         // Assuming average reading speed of 200 words per minute
@@ -43,7 +45,7 @@ const IndividualBlog: React.FC = () => {
         return Math.ceil(minutes); // Round up to nearest whole number
     };
 
-
+    
     return (
         <div className="container-fluid pt-5">
             <main role="main" className="container">
