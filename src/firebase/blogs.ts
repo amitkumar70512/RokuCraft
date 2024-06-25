@@ -47,8 +47,8 @@ export async function getFilteredBlogs(
         let blogsRef = collection(db, 'blogs');
 
         // can we replace any return type??
-        if (filters.id) {
-            blogsRef = query(blogsRef, where('id', '==', filters.id)) as any;
+        if (filters.blogId) {
+            blogsRef = query(blogsRef, where('blogId', '==', filters.blogId)) as any;
         }
 
         if (filters.author) {
@@ -56,10 +56,10 @@ export async function getFilteredBlogs(
             blogsRef = query(blogsRef, orderBy(filters.author)) as any;
         }
 
-        if (filters.premium !== undefined) {
+        if (filters.isPremium !== undefined) {
             blogsRef = query(
                 blogsRef,
-                where('premium', '==', filters.premium),
+                where('isPremium', '==', filters.isPremium),
             ) as any;
         }
 
@@ -103,10 +103,10 @@ export async function getFilteredBlogs(
 }
 
 
-export async function getBlogById(id: string): Promise<Blog | null> {
+export async function getBlogById(blogId: string): Promise<Blog | null> {
     try {
         const blogsRef = collection(db, 'blogs');
-        const q = query(blogsRef, where('id', '==', id));
+        const q = query(blogsRef, where('blogId', '==', blogId));
         const querySnapshot = await getDocs(q);
 
         if (querySnapshot.empty) {
@@ -119,16 +119,16 @@ export async function getBlogById(id: string): Promise<Blog | null> {
 
         // Assuming Blog interface has properties matching the Firestore document fields
         const blog: Blog = {
-            id: doc.id,
+            blogId: blogData.blogId,
             title: blogData.title,
             author: blogData.author,
             image: blogData.image,
             content: blogData.content,
             summary: blogData.summary,
             category: blogData.category,
-            doe: blogData.doe,
-            dop: blogData.dop,
-            premium: blogData.premium,
+            date_of_modification: blogData.date_of_modification,
+            date_of_publication: blogData.date_of_publication,
+            isPremium: blogData.isPremium,
             coins: blogData.coins,
         };
 
@@ -143,37 +143,34 @@ export async function getBlogById(id: string): Promise<Blog | null> {
 export async function addBlog(blogData: Partial<Blog>): Promise<string> {
     try {
     // Omit 'coins', 'doe', 'dop' from Blog interface
-    type DefaultBlogData = Omit<Blog, 'coins' | 'doe' | 'dop'>;
+    type DefaultBlogData = Omit<Blog, 'coins' | 'date_of_publication' | 'date_of_modification'>;
     // Default values
     const defaultBlogData: DefaultBlogData = {
-        id: uuidv4(),
+        blogId: uuidv4(),
         title: 'UNKNOWN',
         author: 'Anonymous',
         image: '',
         content: '',
         summary: 'A short Description about blog',
         category: [],
-        premium: false,
+        isPremium: false,
     };
 
     // Merge input data with default values
 const mergedBlogData: Blog = {
     ...defaultBlogData,
     ...blogData,
-    doe: blogData.doe || new Date().toISOString(), // Use current date in ISO string format if not provided
-    dop: blogData.dop || new Date().toISOString(), // Use current date in ISO string format if not provided
+    date_of_modification: blogData.date_of_modification || new Date().toISOString(), // Use current date in ISO string format if not provided
+    date_of_publication: blogData.date_of_publication || new Date().toISOString(), // Use current date in ISO string format if not provided
     coins: blogData.coins || 0, // Default to 0 if not provided
 };
 
 
     // Add blog to Firestore
     const blogsCollection = collection(db, 'blogs');
-    const timestamp = Timestamp.now(); // Current timestamp
 
     const newBlogRef = await addDoc(blogsCollection, {
         ...mergedBlogData,
-        doe: timestamp, // Firestore timestamp for date of entry
-        dop: timestamp, // Firestore timestamp for date of publication
     });
 
     console.log('New blog added with ID:', newBlogRef.id);

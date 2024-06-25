@@ -13,7 +13,7 @@ const Contact: React.FC = () => {
 		name: '',
 		email: '',
 		message: '',
-		timestamp: new Date(),
+		timestamp: new Date().toISOString(),
 	});
 
 	const [validationErrors, setValidationErrors] = useState<Partial<Feedback>>(
@@ -88,7 +88,7 @@ const Contact: React.FC = () => {
 			// console.log("response: " + responseAlert.message);
 
 			// Reset form fields after successful submission
-			setFormData({ name: '', email: '', message: '', timestamp: new Date() });
+			setFormData({ name: '', email: '', message: '', timestamp: new Date().toISOString() });
 
 			// Optionally show success message to user
 			// alert("Form submitted successfully!");

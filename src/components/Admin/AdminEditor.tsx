@@ -16,8 +16,8 @@ const AdminEditor: React.FC<AdminEditorProps> = ({ onAddSuccess }) => {
         content: '',
         summary: 'A short Description about blog',
         category: [],
-        premium: false,
-        dop: new Date().toISOString(), // Date of publication
+        isPremium: false,
+        date_of_publication: new Date().toISOString(), // Date of publication
     });
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -52,8 +52,8 @@ const AdminEditor: React.FC<AdminEditorProps> = ({ onAddSuccess }) => {
                 content: '',
                 summary: '',
                 category: [],
-                premium: false,
-                dop: new Date().toISOString(), // Reset dop to current date as Date object
+                isPremium: false,
+                date_of_publication: new Date().toISOString(), // Reset dop to current date as Date object
             });
             // Call parent component callback to handle success (e.g., close modal)
             onAddSuccess();
@@ -120,7 +120,7 @@ const AdminEditor: React.FC<AdminEditorProps> = ({ onAddSuccess }) => {
                 <input
                     type="checkbox"
                     name="premium"
-                    checked={blogData.premium}
+                    checked={blogData.isPremium}
                     onChange={handleInputChange}
                 />
             </label>
@@ -129,7 +129,7 @@ const AdminEditor: React.FC<AdminEditorProps> = ({ onAddSuccess }) => {
                 <input
                     type="text"
                     name="dop"
-                    value={blogData.dop} // Format dop as needed for display
+                    value={blogData.date_of_publication} // Format dop as needed for display
                     readOnly // Ensure date is not editable by user
                 />
             </label>
