@@ -1,11 +1,12 @@
 import { getFilteredBlogs } from '../../firebase/blogs';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import { Blog } from '../../firebase/interface';
 
 export default function ContinueReading() {
     const [Blog, setBlogs] = useState<Blog | undefined>();
-
+    const navigate = useNavigate();
     useEffect(() => {
         const fetchFilteredBlog = async () => {
             try {
@@ -24,6 +25,9 @@ export default function ContinueReading() {
         fetchFilteredBlog();
     }, []);
 
+    const handleClick = () => {
+        navigate(`/blog/show/${Blog?.id}`);
+    };
 
     return (
         <>
@@ -33,7 +37,7 @@ export default function ContinueReading() {
                         <h1 className="display-4 font-italic">{Blog.title}</h1>
                         <p className="lead my-3">{Blog.summary}</p>
                         <ReactMarkdown>{Blog.content}</ReactMarkdown>
-                        <p className="lead mb-0"><a href="#" className="text-white font-weight-bold">Continue reading...</a></p>
+                        <p className="lead mb-0"><a href="#" onClick={handleClick} className="text-white font-weight-bold">Continue reading...</a></p>
                     </div>
                 </div>)}
         </>
