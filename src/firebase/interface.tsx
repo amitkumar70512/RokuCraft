@@ -1,34 +1,39 @@
 export interface Blog {
-  id: string;
+  blogId: string;
   title: string;
   author: string;
   image: string;
   content: string;
   summary: string;
   category: string[];
-  doe: string;
-  dop: string;
-  premium: boolean;
+  date_of_modification: string;
+  date_of_publication: string;
+  isPremium: boolean;
   coins: number;
 }
 export interface Feedback {
   name: string;
   email: string;
   message: string;
-  timestamp: Date;
+  timestamp: string;
 }
 
 export interface Bot {
   id: string;
   name: string;
   userName: string;
+  bio?: string;
   mobile?: string;
   email: string;
   image?: string;
   password: string;
   isPremium: boolean;
-  coins: number;
+  coins: Coins;
   isAdmin: boolean;
-  doc: Date; // date of creation
-  doe: Date; // date of expiry of coins
+  date_of_creation: string;
+}
+
+export interface Coins {
+  count: number;
+  date_of_expiry: string;
 }

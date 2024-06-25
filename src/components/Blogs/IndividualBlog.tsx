@@ -16,8 +16,8 @@ const IndividualBlog: React.FC = () => {
             try {
                 if (blogId !== undefined) {
                     const blog = await getBlogById(blogId);
-                    if (blog?.dop) {
-                        const dateObj = new Date(blog.dop);
+                    if (blog?.date_of_publication) {
+                        const dateObj = new Date(blog.date_of_publication);
                         if (!isNaN(dateObj.getTime())) {
                             setPublicationDate( dateObj.toLocaleDateString());
                         }

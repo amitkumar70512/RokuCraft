@@ -31,14 +31,13 @@ export default function Blogs() {
                     {/* Render BlogCard components dynamically */}
                     <div className="row">
                         {!loading && blogData && blogData.map((blog) => (
-                            <BlogCard blog={blog} key={blog.id} />
+                            <BlogCard blog={blog} key={blog.blogId} />
                         ))}
                         {
                             loading && !blogData &&
                             <div className="spinner-border text-secondary" role="status">
                                 <span className="visually-hidden">Loading...</span>
                             </div>
-
                         }
                         {
                             !blogData && !loading &&

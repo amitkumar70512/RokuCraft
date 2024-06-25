@@ -1,146 +1,196 @@
 import { db } from './firebase';
 import {
-    collection, query, where, getDocs, addDoc, Timestamp, QuerySnapshot} from 'firebase/firestore';
-import { Bot } from './interface';
+	collection,
+	query,
+	where,
+	getDocs,
+	addDoc,
+	Timestamp,
+	QuerySnapshot,
+} from 'firebase/firestore';
+import { Bot, Coins } from './interface';
 import { v4 as uuidv4 } from 'uuid'; // Import uuidv4 to generate random IDs
-
 
 // Function to add a new bot with default values
 export async function addBot(botData: Partial<Bot>): Promise<string> {
-    try {
-		// Omit 'coins', 'doe', 'dop' from bot interface
-		type DefaultBotData = Omit<Bot, 'coins' | 'doe' | 'doc'>;
+	try {
+    type DefaultBotData = Omit<Bot, 'coins' | 'date_of_creation'>;
+    type DefaultCoinsData = Coins;
+
 		// Default values
 		const defaultBotData: DefaultBotData = {
-		  id: uuidv4(),
-		  name: '',
-		  userName: '',
-		  password: '',
-		  image: '',
-		  mobile: '',
-		  email: '',
-		  isPremium: false,
-		  isAdmin: false,
+			id: uuidv4(),
+			name: '',
+			userName: '',
+			password: '',
+			image: '',
+			mobile: '',
+			email: '',
+			isPremium: false,
+			isAdmin: false,
 		};
 
+    // Get the current date and add 365 days to it
+    const currentDate = new Date();
+    const expiryDate = new Date(currentDate);
+    expiryDate.setDate(currentDate.getDate() + 365);
+
+    // Default values for Coins
+    const defaultCoinsData: DefaultCoinsData = {
+      count: 0,
+      date_of_expiry: expiryDate.toISOString(), // 365 days added
+    };
+
 		// Merge input data with default values
-		const mergedBotData: Bot = {
-		  ...defaultBotData,
-		  ...botData,
-		  doe: botData.doe || new Date(), // Use current date if not provided
-		  doc: botData.doc || new Date(), // Use current date if not provided
-		  coins: botData.coins || 0, // Default to 0 if not provided
-		};
+    const mergedBotData: Bot = {
+      ...defaultBotData,
+      ...botData,
+      date_of_creation: botData.date_of_creation || new Date().toISOString(), // Use current date if not provided
+      coins: {
+        ...defaultCoinsData,
+        ...botData.coins,
+      },
+    };
 
 		// Add bot to Firestore
 		const botsCollection = collection(db, 'bots');
-		const timestamp = Timestamp.now(); // Current timestamp
 
 		const newBotRef = await addDoc(botsCollection, {
-		  ...mergedBotData,
-		  doe: timestamp, // Firestore timestamp for date of entry
-		  dop: timestamp, // Firestore timestamp for date of publication
+			...mergedBotData,
 		});
 
 		console.log('New bot added with ID:', newBotRef.id);
 		return newBotRef.id;
-    } catch (error) {
-        console.error('Error adding bot:', error);
-        throw error;
-    }
+	} catch (error) {
+		console.error('Error adding bot:', error);
+		throw error;
+	}
 }
 
 // get all bots
 export async function getAllBots(): Promise<Bot[]> {
-    try {
-        const botsCollection = collection(db, 'bots');
-        const snapshot = await getDocs(botsCollection);
+	try {
+		const botsCollection = collection(db, 'bots');
+		const snapshot = await getDocs(botsCollection);
 
-        if (snapshot.empty) {
-            return [];
-        }
+		if (snapshot.empty) {
+			return [];
+		}
 
-        const bots: Bot[] = [];
-        snapshot.forEach((doc) => {
-            bots.push({
-                ...doc.data(),
-            } as Bot);
-        });
+		const bots: Bot[] = [];
+		snapshot.forEach((doc) => {
+			bots.push({
+				...doc.data(),
+			} as Bot);
+		});
 
-        return bots;
-    } catch (error) {
-        console.error('Error fetching all bots:', error);
-        throw error;
-    }
+		return bots;
+	} catch (error) {
+		console.error('Error fetching all bots:', error);
+		throw error;
+	}
 }
 
 export async function getFilteredBots(filters: Partial<Bot>): Promise<Bot[]> {
-    try {
-        let botsCollection = collection(db, 'bots');
+	try {
+		let botsCollection = collection(db, 'bots');
 
-        // Apply filters if provided
-        if (filters.id) {
-            botsCollection = query(
-                botsCollection,
-                where('id', '==', filters.id),
-            ) as any;
-        }
+		// Apply filters if provided
+		if (filters.id) {
+			botsCollection = query(
+				botsCollection,
+				where('id', '==', filters.id)
+			) as any;
+		}
 
-        if (filters.email) {
-            botsCollection = query(
-                botsCollection,
-                where('email', '==', filters.email),
-            ) as any;
-        }
+		if (filters.userName) {
+			botsCollection = query(
+				botsCollection,
+				where('userName', '==', filters.userName)
+			) as any;
+		}
 
-        if (filters.mobile) {
-            botsCollection = query(
-                botsCollection,
-                where('mobile', '==', filters.mobile),
-            ) as any;
-        }
-        if (filters.isPremium !== undefined) {
-            botsCollection = query(
-                botsCollection,
-                where('isPremium', '==', filters.isPremium),
-            ) as any;
-        }
+		if (filters.email) {
+			botsCollection = query(
+				botsCollection,
+				where('email', '==', filters.email)
+			) as any;
+		}
 
-        if (filters.isAdmin !== undefined) {
-            botsCollection = query(
-                botsCollection,
-                where('isAdmin', '==', filters.isAdmin),
-            ) as any;
-        }
-        // Add more filters as needed
+		if (filters.mobile) {
+			botsCollection = query(
+				botsCollection,
+				where('mobile', '==', filters.mobile)
+			) as any;
+		}
+		if (filters.isPremium !== undefined) {
+			botsCollection = query(
+				botsCollection,
+				where('isPremium', '==', filters.isPremium)
+			) as any;
+		}
 
-        const snapshot: QuerySnapshot = await getDocs(botsCollection);
+		if (filters.isAdmin !== undefined) {
+			botsCollection = query(
+				botsCollection,
+				where('isAdmin', '==', filters.isAdmin)
+			) as any;
+		}
+		// Add more filters as needed
 
-        if (snapshot.empty) {
-            return [];
-        }
+		const snapshot: QuerySnapshot = await getDocs(botsCollection);
 
-        let bots: Bot[] = [];
-        snapshot.forEach((doc) => {
-            bots.push({
-                id: doc.id,
-                ...doc.data(),
-            } as Bot);
-        });
+		if (snapshot.empty) {
+			return [];
+		}
 
-        // If name filter is provided, filter the bots array for substring match
-        if (filters.name) {
-            const nameLower = filters.name.toLowerCase();
-            bots = bots.filter((bot) => {
-                const botNameLower = bot.name.toLowerCase();
-                return botNameLower.includes(nameLower);
-            });
-        }
+		let bots: Bot[] = [];
+		snapshot.forEach((doc) => {
+			bots.push({
+				id: doc.id,
+				...doc.data(),
+			} as Bot);
+		});
 
-        // console.log("Filtered bots:", bots);
-        return bots;
-    } catch (error) {
-        console.error('Error fetching filtered bots:', error);
-        throw error;
-    }
+		// If name filter is provided, filter the bots array for substring match
+		if (filters.name) {
+			const nameLower = filters.name.toLowerCase();
+			bots = bots.filter((bot) => {
+				const botNameLower = bot.name.toLowerCase();
+				return botNameLower.includes(nameLower);
+			});
+		}
+
+		// console.log("Filtered bots:", bots);
+		return bots;
+	} catch (error) {
+		console.error('Error fetching filtered bots:', error);
+		throw error;
+	}
+}
+
+export async function getBotByUserName(userName: string): Promise<Bot | null> {
+	try {
+		let botsCollection = collection(db, 'bots');
+		const q = query(botsCollection, where('userName', '==', userName));
+		const querySnapshot = await getDocs(q);
+
+		if (querySnapshot.empty) {
+			console.log('No matching users.');
+			return null;
+		}
+
+		const doc = querySnapshot.docs[0];
+		const botData = doc.data();
+
+		const bot: Bot = {
+			id: doc.id,
+			...botData,
+		} as Bot;
+
+		return bot;
+	} catch (error) {
+		console.error('Error fetching User:', error);
+		throw error;
+	}
 }

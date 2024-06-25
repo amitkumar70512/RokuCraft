@@ -57,7 +57,7 @@ function FeaturedBlogs({ limit = 5, author, coins, dop, premium, isAdmin }: Filt
               {/* Render BlogCard components dynamically */}
               <div className="row">
                   {blogData.map((blog) => (
-                      <BlogCard blog={blog} key={blog.id} />
+                      <BlogCard blog={blog} key={blog.blogId} />
                   ))}
               </div>
           </div>
