@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
-import { deleteBlogById } from '../../firebase/blogs';
+import { deleteBlogById } from '../../../firebase/blogs';
 
 interface ConfirmationDialogProps {
     id: string;

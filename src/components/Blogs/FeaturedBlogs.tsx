@@ -12,6 +12,7 @@ interface FilterProps {
   isAdmin?: boolean; // Flag to determine if admin view (default: false)
 }
 
+
 function FeaturedBlogs({ limit = 5, author, coins, dop, premium, isAdmin }: FilterProps) {
     const [blogData, setBlogData] = useState<Blog[]>([]); // State to hold blog data
 

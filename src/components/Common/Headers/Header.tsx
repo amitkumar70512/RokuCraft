@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import MyProfileSubSection from '../UserSubSection/UserSubSection';
+import MyProfileSubSection from '../../Users/MyProfileSubSection/MyProfileSubSection';
 import './Header.css'; // Import your CSS file for header-specific styles
 
 function Header() {
@@ -9,10 +9,17 @@ function Header() {
     const handleProfileHover = () => {
         setShowProfile(true);
     };
-
-    const handleProfileLeave = () => {
+    const hideProfile = () => {
         setShowProfile(false);
     };
+
+    const handleProfileLeave = () => {
+        setTimeout(() => {
+            if(!showProfile)
+                setShowProfile(false);
+        }, 500);
+    };
+    
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -42,10 +49,12 @@ function Header() {
                         </li>
                     </ul>
                 </div>
+
                 <div className="myProfile" onMouseEnter={handleProfileHover} onMouseLeave={handleProfileLeave}>
                     <i className="fa fa-user-circle profile-icon"></i>
-                    {showProfile && <MyProfileSubSection />}
                 </div>
+
+                {showProfile && <MyProfileSubSection  hideProfile={hideProfile} />}
             </div>
         </nav>
     );
