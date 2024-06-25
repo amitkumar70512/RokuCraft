@@ -4,12 +4,13 @@ import ReactMarkdown from 'react-markdown';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import { Blog } from '../../firebase/interface';
 import { getBlogById } from '../../firebase/blogs'; // Adjust import path as needed
+import UserSubSection from '../../components/UserSubSection/UserSubSection';
 
 const IndividualBlog: React.FC = () => {
     const { blogId } = useParams<{ blogId: string }>();
     const [blogData, setBlogData] = useState<Blog | null>(null); // State to hold blog data
     const [loading, setLoading] = useState<boolean>(true); // State to manage loading state
-    const [publicationDate,setPublicationDate] = useState<String>('');
+    const [publicationDate, setPublicationDate] = useState<String>('');
 
     useEffect(() => {
         const fetchBlog = async () => {
@@ -19,10 +20,10 @@ const IndividualBlog: React.FC = () => {
                     if (blog?.dop) {
                         const dateObj = new Date(blog.dop);
                         if (!isNaN(dateObj.getTime())) {
-                            setPublicationDate( dateObj.toLocaleDateString());
+                            setPublicationDate(dateObj.toLocaleDateString());
                         }
                     }
-                    if(blogId)
+                    if (blogId)
                         localStorage.setItem('blogId', blogId);
                     setBlogData(blog);
                 }
@@ -45,7 +46,7 @@ const IndividualBlog: React.FC = () => {
         return Math.ceil(minutes); // Round up to nearest whole number
     };
 
-    
+
     return (
         <div className="container-fluid pt-5">
             <main role="main" className="container">
@@ -65,7 +66,9 @@ const IndividualBlog: React.FC = () => {
                                     Published on: {publicationDate}
                                 </p>
 
+                                <UserSubSection />
                             </div>
+
                         }
                         {
                             loading && !blogData &&

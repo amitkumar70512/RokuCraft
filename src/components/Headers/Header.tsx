@@ -1,35 +1,50 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-// import logo from '../../images/Roku-craft-logo.png';
+import MyProfileSubSection from '../UserSubSection/UserSubSection';
+import './Header.css'; // Import your CSS file for header-specific styles
 
 function Header() {
+    const [showProfile, setShowProfile] = useState(false);
+
+    const handleProfileHover = () => {
+        setShowProfile(true);
+    };
+
+    const handleProfileLeave = () => {
+        setShowProfile(false);
+    };
+
     return (
-        <nav className="navbar navbar-expand-lg bg-body-tertiary" style={{width:'100%'}}>
-            <div className="container-fluid">
-                {/* <img id="logo" src={logo} alt="logo" /> */}
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+            <div className="container">
+                <Link className="navbar-brand" to="/">
+                    Logo {/* Replace with your logo if needed */}
+                </Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                    <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li className="nav-item">
-                            <Link className='nav-link' to="./">Log</Link>
+                            <Link className="nav-link" to="/">Home</Link>
                         </li>
-                        <li>
-                            <Link className='nav-link' to="./contact">Contact Us </Link>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/contact">Contact Us</Link>
                         </li>
-                        <li>
-                            <Link className='nav-link' to="./blogs">Blogs</Link>
-
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/blogs">Blogs</Link>
                         </li>
-                        <li>
-                            <Link className='nav-link' to="./login">Login</Link>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/login">Login</Link>
                         </li>
-                        <li>
-                            <Link className='nav-link' to="./admin">admin</Link>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/admin">Admin</Link>
                         </li>
                     </ul>
-
+                </div>
+                <div className="myProfile" onMouseEnter={handleProfileHover} onMouseLeave={handleProfileLeave}>
+                    <i className="fa fa-user-circle profile-icon"></i>
+                    {showProfile && <MyProfileSubSection />}
                 </div>
             </div>
         </nav>
