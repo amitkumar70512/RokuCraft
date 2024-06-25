@@ -6,11 +6,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "prod": "webpack --mode=production",
     "lint": "eslint --fix src",
     "predeploy": "npm run prod",
     "deploy": "gh-pages -d build",
     "start": "webpack-dev-server --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js"
+    "build": "webpack --config webpack.prod.js",
+    "dev": "npm run build && node server.js"
   },
   "author": "Amit kumar, Shivanand M",
   "license": "ISC",
