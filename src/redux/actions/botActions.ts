@@ -28,3 +28,21 @@ export const fetchBotByUserName = (botUserName: string | null) => {
     }
   };
 };
+
+// will refresh bot username from localDb
+export const refreshBotUserName = () => {
+    const botUserName = localStorage.getItem("botUserName"); // Move this to the component if needed
+  return async (dispatch: Dispatch) => {
+    try {
+      if (botUserName) {
+        const bot = await getBotByUserName(botUserName);
+        dispatch(setBotData(bot));
+      } else {
+        dispatch(setBotData(null)); // Reset bot data if botUserName is null
+      }
+    } catch (error) {
+      console.error("Error fetching bot:", error);
+    }
+  };
+};
+

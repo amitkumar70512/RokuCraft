@@ -6,6 +6,8 @@ import { RootState } from '../../redux/store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { startLoading } from '../../redux/actions/loadingActions';
 import { stopLoading } from '../../redux/actions/loadingActions';
+import { refreshBotUserName } from '../../redux/actions/botActions';
+import { startLoggedIn, stopLoggedIn } from '../../redux/actions/loggedInActions';
 
 // Define the interfaces for form data and validation errors
 interface LoginForm {
@@ -33,6 +35,14 @@ const Login: React.FC = () => {
   useEffect(() => {
     checkIfLoggedIn()
   }, [])
+
+  useEffect(() => {
+    if(isLoggedIn){
+      dispatch(startLoggedIn());
+    }else{
+      dispatch(stopLoggedIn());
+    }
+  }, [isLoggedIn])
 
   const [validationErrors, setValidationErrors] = useState<Partial<LoginForm>>({});
   const [errors, setErrors] = useState<Partial<FormErrors>>({});
@@ -108,6 +118,8 @@ const Login: React.FC = () => {
 
   const navigateToHomePage = () => {
     setTimeout(() => {
+      dispatch(refreshBotUserName());
+      dispatch(startLoggedIn());
       dispatch(stopLoading());
       navigate("/home");
     }, 2000); // Example delay of 2 seconds

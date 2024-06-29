@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import MyProfileSubSection from '../../Users/MyProfileSubSection/MyProfileSubSection';
 import './Header.css'; // Import your CSS file for header-specific styles
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../redux/store/store';
 
 function Header() {
+    const isLoggedIn = useSelector((state: RootState) => state.loggedIn.isLoggedIn);
     const [showProfile, setShowProfile] = useState(false);
 
     const handleProfileHover = () => {
@@ -15,11 +18,11 @@ function Header() {
 
     const handleProfileLeave = () => {
         setTimeout(() => {
-            if(!showProfile)
+            if (!showProfile)
                 setShowProfile(false);
         }, 500);
     };
-    
+
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -41,20 +44,25 @@ function Header() {
                         <li className="nav-item">
                             <Link className="nav-link" to="/blogs">Blogs</Link>
                         </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/login">Login</Link>
-                        </li>
+                        {
+                            !isLoggedIn && <li className="nav-item">
+                                <Link className="nav-link" to="/login">Login</Link>
+                            </li>
+                        }
+
                         <li className="nav-item">
                             <Link className="nav-link" to="/admin">Admin</Link>
                         </li>
                     </ul>
                 </div>
 
-                <div className="myProfile" onMouseEnter={handleProfileHover} onMouseLeave={handleProfileLeave}>
-                    <i className="fa fa-user-circle profile-icon"></i>
-                </div>
+                {isLoggedIn &&
+                    <div className="myProfile" onMouseEnter={handleProfileHover} onMouseLeave={handleProfileLeave}>
+                        <i className="fa fa-user-circle profile-icon"></i>
+                    </div>
+                }
+                {showProfile && <MyProfileSubSection hideProfile={hideProfile} />}
 
-                {showProfile && <MyProfileSubSection  hideProfile={hideProfile} />}
             </div>
         </nav>
     );

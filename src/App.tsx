@@ -16,6 +16,7 @@ import BotProfile from './components/Users/MyProfile/MyProfile';
 import LoadingSpinner from './components/Common/LoadingSpinner/LoadingSpinner';
 import { useSelector } from 'react-redux';
 import { RootState } from './redux/store/store';
+import AdminRoute from './components/PrivateRoute/AdminRoute';
 
 const App: React.FC = () => {
     const isLoggedIn = false;
@@ -27,10 +28,10 @@ const App: React.FC = () => {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/home" element={<Home />} />
-                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/contact" element={<PrivateRoute><Contact /></PrivateRoute>} />
                     <Route path="/blogs" element={<Blogs />} />
                     <Route path="/blog/show/:blogId" element={<IndividualBlog />} />
-                    <Route path="/admin" element={<PrivateRoute ><Admin /></PrivateRoute>} />
+                    <Route path="/admin" element={<AdminRoute ><Admin /></AdminRoute>} />
                     <Route path="/profile/:userName" element={<BotProfile />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />

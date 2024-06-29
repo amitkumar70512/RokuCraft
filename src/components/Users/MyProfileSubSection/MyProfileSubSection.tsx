@@ -19,7 +19,7 @@ interface MyProfileSubSectionProps {
                         <div className="image">
                             <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80" className="rounded" width="155" />
                         </div>
-                        <h4 className="mb-0 mt-0">{botData?.userName??"Unknown"}</h4>
+                        <h4 className="mb-0 mt-0">{botData?.userName}</h4>
                         <span>Senior Journalist</span>
                         <div className="p-2 mt-2 bg-primary d-flex justify-content-between rounded text-white stats">
                             <div className="d-flex flex-column">

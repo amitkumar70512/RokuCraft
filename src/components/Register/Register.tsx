@@ -156,6 +156,7 @@ const Register: React.FC = () => {
 					.catch((error: Error) => {
 					  console.error('Error adding bot: ', error.message);
 					});
+					
 					dispatch(fetchBotByUserName(formData?.userName));
 				setResponseErrors({
 					isError: false,
