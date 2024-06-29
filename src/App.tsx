@@ -13,10 +13,13 @@ import Register from './components/Register/Register';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import IndividualBlog from './components/Blogs/IndividualBlog'; // Adjust path as needed
 import BotProfile from './components/Users/MyProfile/MyProfile';
+import LoadingSpinner from './components/Common/LoadingSpinner/LoadingSpinner';
+import { useSelector } from 'react-redux';
+import { RootState } from './redux/store/store';
 
 const App: React.FC = () => {
     const isLoggedIn = false;
-
+    const isLoading = useSelector((state: RootState) => state.loading.isLoading); // Fetch isLoading from Redux store
     return (
         <Router>
             <div className="justify-content-center">
@@ -36,6 +39,7 @@ const App: React.FC = () => {
                 </Routes>
                 <Footer />
                 <GoToTopButton />
+                {isLoading && <LoadingSpinner />} {/* Conditionally render LoadingSpinner based on isLoading */}
             </div>
         </Router>
     );

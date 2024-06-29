@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux'; // Import useSelector
 import { Feedback } from '../../firebase/interface';
-import {
-	getAllFeedbacks,
-	getFilteredFeedbacks,
-	addFeedback,
-} from '../../firebase/feedback';
+import { addFeedback } from '../../firebase/feedback';
 import { FormErrors } from '../Common/interface';
 import Alerts from '../Common/Alerts';
+import LoadingSpinner from '../../components/Common/LoadingSpinner/LoadingSpinner';
+import { startLoading, stopLoading } from '../../redux/actions/loadingActions';
+import { RootState } from '../../redux/store/store';
 
 const Contact: React.FC = () => {
+	const dispatch = useDispatch<any>();
+
 	const [formData, setFormData] = useState<Feedback>({
 		name: '',
 		email: '',
@@ -61,12 +63,12 @@ const Contact: React.FC = () => {
 		// Set errors and stop submission if there are validation errors
 		if (Object.keys(validationErrors).length > 0) {
 			setValidationErrors(validationErrors);
-			console.log('errors: ' + validationErrors);
 			return;
 		}
 
 		// If there are no validation errors, proceed with form submission logic
 		try {
+			dispatch(startLoading());
 			const response = await addFeedback(formData);
 			if (response.isSuccess) {
 				setResponseAlert({
@@ -81,21 +83,14 @@ const Contact: React.FC = () => {
 					message: 'Try Refreshing and Submit again',
 				});
 			}
-			const message = response.isSuccess
-				? 'Feedback submitted successfully! Feedback ID:'
-				: 'Failed to submit feedback. Please try again later.';
-			console.log(message, response.feedbackId);
-			// console.log("response: " + responseAlert.message);
-
 			// Reset form fields after successful submission
 			setFormData({ name: '', email: '', message: '', timestamp: new Date().toISOString() });
-
-			// Optionally show success message to user
-			// alert("Form submitted successfully!");
 		} catch (error) {
 			console.error('Error submitting form:', error);
 			// Handle error, e.g., display an error message to the user
 			alert('Failed to submit form. Please try again later.');
+		} finally {
+			dispatch(stopLoading()); // Ensure loading state is stopped regardless of success or failure
 		}
 	};
 
@@ -123,9 +118,8 @@ const Contact: React.FC = () => {
 							<input
 								type='text'
 								name='name'
-								className={`form-control ${
-									validationErrors.name ? 'is-invalid' : ''
-								}`}
+								className={`form-control ${validationErrors.name ? 'is-invalid' : ''
+									}`}
 								placeholder='Enter your name'
 								value={formData.name}
 								onChange={handleChange}
@@ -145,9 +139,8 @@ const Contact: React.FC = () => {
 							<input
 								type='email'
 								name='email'
-								className={`form-control ${
-									validationErrors.email ? 'is-invalid' : ''
-								}`}
+								className={`form-control ${validationErrors.email ? 'is-invalid' : ''
+									}`}
 								placeholder='Enter your email'
 								value={formData.email}
 								onChange={handleChange}
@@ -167,9 +160,8 @@ const Contact: React.FC = () => {
 							<textarea
 								name='message'
 								id='message'
-								className={`form-control ${
-									validationErrors.message ? 'is-invalid' : ''
-								}`}
+								className={`form-control ${validationErrors.message ? 'is-invalid' : ''
+									}`}
 								placeholder='Write your message'
 								value={formData.message}
 								onChange={handleChange}
@@ -186,6 +178,7 @@ const Contact: React.FC = () => {
 							</button>
 						</div>
 					</form>
+					
 				</div>
 			</div>
 		</div>

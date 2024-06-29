@@ -1,6 +1,11 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Alerts from '../../components/Common/Alerts';
+import { reauthenticateWithTokens } from '../../firebase/auth/WithEmail';
+import { RootState } from '../../redux/store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { startLoading } from '../../redux/actions/loadingActions';
+import { stopLoading } from '../../redux/actions/loadingActions';
 
 // Define the interfaces for form data and validation errors
 interface LoginForm {
@@ -15,11 +20,19 @@ interface FormErrors {
 }
 
 const Login: React.FC = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch<any>();
+  // const userName = useSelector((state: RootState) => state.auth.displayName); // Fetch isLoading from Redux store
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [formData, setFormData] = useState<LoginForm>({
     email: '',
     password: '',
     rememberMe: true,
   });
+
+  useEffect(() => {
+    checkIfLoggedIn()
+  }, [])
 
   const [validationErrors, setValidationErrors] = useState<Partial<LoginForm>>({});
   const [errors, setErrors] = useState<Partial<FormErrors>>({});
@@ -64,30 +77,49 @@ const Login: React.FC = () => {
 
     // Simulate login logic (replace with actual login API call)
     try {
-      // Example: Simulate API call for login
-      // const response = await fetch('/api/login', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(formData),
-      // });
-      // if (!response.ok) {
-      //   throw new Error('Login failed');
-      // }
+      dispatch(startLoading());
+      // check if logged in based on saved Tokens
+
 
       // Simulated successful login
       setFormData({ email: "", password: "", rememberMe: true });
-
-      alert('Logged in successfully!'); // Replace with redirect or other logic
+      console.log('====================================');
+      console.log("userName" + "  is logged in");
+      console.log('====================================');
+      setIsLoggedIn(true);
     } catch (error) {
+      setIsLoggedIn(false);
       console.error('Error Logging in:', error);
       // Handle error, e.g., display an error message to the user
       setErrors({ title: 'Login Failed', message: 'Failed to Log in. Please try again.' });
+    } finally {
+      dispatch(stopLoading());
     }
   };
 
-  const isLoggedIn = false;
+  const navigateToHomePage = () => {
+    setTimeout(() => {
+      dispatch(stopLoading());
+      navigate("/home");
+    }, 2000); // Example delay of 2 seconds
+  };
+
+  const checkIfLoggedIn = () => {
+    dispatch(startLoading());
+    // Check if tokens are stored in local storage
+    const storedIdToken = localStorage.getItem('accessToken');
+    const storedRefreshToken = localStorage.getItem('refreshToken');
+
+    if (storedIdToken && storedRefreshToken) {
+      reauthenticateWithTokens(storedIdToken, storedRefreshToken);
+      console.log('User is logged in.');
+      // Redirect to home page 
+      navigateToHomePage();
+    } else {
+      dispatch(stopLoading());
+      console.error('Tokens not found in local storage');
+    }
+  };
 
   return (
     <div className="container-sm p-5 m-5 bg-light rounded">
