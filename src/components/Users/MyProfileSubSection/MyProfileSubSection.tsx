@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './MyProfileSubSection.css'
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store/store';
@@ -8,7 +8,9 @@ interface MyProfileSubSectionProps {
   }
   
   const MyProfileSubSection: React.FC<MyProfileSubSectionProps> = ({ hideProfile }) => {
-    const userName = useSelector((state: RootState) => state.auth?.displayName); // Fetch isLoading from Redux store
+    const botData = useSelector((state: RootState) => state.bot.botData);
+
+    
     return (
         <div className=" mt-5 d-flex usersubsection"  onMouseLeave={hideProfile}>
             <div className="profileCard p-3">
@@ -17,7 +19,7 @@ interface MyProfileSubSectionProps {
                         <div className="image">
                             <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80" className="rounded" width="155" />
                         </div>
-                        <h4 className="mb-0 mt-0">{userName? userName: "Alex HMorrision"}</h4>
+                        <h4 className="mb-0 mt-0">{botData?.userName??"Unknown"}</h4>
                         <span>Senior Journalist</span>
                         <div className="p-2 mt-2 bg-primary d-flex justify-content-between rounded text-white stats">
                             <div className="d-flex flex-column">

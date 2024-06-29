@@ -8,7 +8,8 @@ import Alerts from '../Common/Alerts';
 import { Link, useNavigate } from 'react-router-dom';
 import { startLoading, stopLoading } from '../../redux/actions/loadingActions';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../redux/store/store';
+import { addBot } from '../../firebase/bots';
+import { fetchBotByUserName } from '../../redux/actions/botActions';
 
 /*
 
@@ -139,6 +140,23 @@ const Register: React.FC = () => {
 				formData.userName
 			);
 			if (response.isSuccess) {
+				// will update BOt data firestore
+				const newBotData: Partial<Bot> = {
+					name: formData.name,
+					userName: formData.email,
+					email: formData.email,
+					isPremium: false,
+					isAdmin: false,
+				  };
+				  
+				  addBot(newBotData)
+					.then((botId: string) => {
+					  console.log(`Bot added successfully with ID: ${botId}`)
+					})
+					.catch((error: Error) => {
+					  console.error('Error adding bot: ', error.message);
+					});
+					dispatch(fetchBotByUserName(formData?.userName));
 				setResponseErrors({
 					isError: false,
 					title: `Hi ${formData.name}! `,

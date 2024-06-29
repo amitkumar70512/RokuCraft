@@ -120,7 +120,8 @@ const Login: React.FC = () => {
     const storedRefreshToken = localStorage.getItem('refreshToken');
 
     if (storedIdToken && storedRefreshToken) {
-      reauthenticateWithTokens(storedIdToken, storedRefreshToken);
+      reauthenticateWithTokens(storedIdToken, storedRefreshToken);// handle response for this
+      
       console.log('User is logged in.');
       // Redirect to home page 
       navigateToHomePage();
