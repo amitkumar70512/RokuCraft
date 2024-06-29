@@ -135,7 +135,8 @@ const Register: React.FC = () => {
 			dispatch(startLoading());
 			const response = await RegisterWithEmail(
 				formData.email,
-				formData.password
+				formData.password,
+				formData.userName
 			);
 			if (response.isSuccess) {
 				setResponseErrors({

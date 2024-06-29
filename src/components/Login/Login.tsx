@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Alerts from '../../components/Common/Alerts';
-import { reauthenticateWithTokens } from '../../firebase/auth/WithEmail';
+import { reauthenticateWithTokens, signInWithEmailAndPasswordFn } from '../../firebase/auth/WithEmail';
 import { RootState } from '../../redux/store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { startLoading } from '../../redux/actions/loadingActions';
@@ -64,10 +64,9 @@ const Login: React.FC = () => {
 
     if (!formData.password.trim()) {
       validationErrors.password = 'Password is required';
-    } else if (
-      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(formData.password)
-    ) {
-      validationErrors.password = 'Password is invalid';
+    } else if (!/^.{5,}$/.test(formData.password)) {
+      validationErrors.password =
+        'Password must be at least 5 characters long.';
     }
 
     if (Object.keys(validationErrors).length > 0) {
@@ -78,15 +77,25 @@ const Login: React.FC = () => {
     // Simulate login logic (replace with actual login API call)
     try {
       dispatch(startLoading());
+      console.log("user Success amit----------");
       // check if logged in based on saved Tokens
+      const response = await signInWithEmailAndPasswordFn(formData.email, formData.password);
+      if (response.isSuccess) {
+        // Simulated successful login
+        setFormData({ email: "", password: "", rememberMe: true });
+        setIsLoggedIn(true);
+        navigateToHomePage();
+      } else {
+        // Simulated failed login
+        setFormData(prevFormData => ({
+          ...prevFormData,
+          password: "",
+          rememberMe: true
+        }));
+        setIsLoggedIn(false);
+        setErrors({ message: "UnKnown Issue occurred!" });
+      }
 
-
-      // Simulated successful login
-      setFormData({ email: "", password: "", rememberMe: true });
-      console.log('====================================');
-      console.log("userName" + "  is logged in");
-      console.log('====================================');
-      setIsLoggedIn(true);
     } catch (error) {
       setIsLoggedIn(false);
       console.error('Error Logging in:', error);
@@ -166,7 +175,7 @@ const Login: React.FC = () => {
 
             <div data-mdb-input-init className="form-outline mb-4">
               <input
-                type="email"
+                type="text"
                 id="loginName"
                 name="email"
                 className={`form-control ${validationErrors.email ? 'is-invalid' : ''}`}
@@ -175,7 +184,7 @@ const Login: React.FC = () => {
                 required
               />
               <label className="form-label" htmlFor="loginName">
-                Email or username
+                Email
               </label>
               {validationErrors.email && (
                 <div className="invalid-feedback">
