@@ -3,6 +3,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // Import styles for react-quill
 import { addBlog } from '../../../firebase/blogs'; // Replace with actual path to your blogService
 import { Blog } from '../../../firebase/interface'; // Replace with actual path to your Blog interface
+import UploadImage from '../../../components/Common/UploadImage/UploadImage';
 
 interface AdminEditorProps {
     onAddSuccess: () => void;
@@ -135,6 +136,7 @@ const AdminEditor: React.FC<AdminEditorProps> = ({ onAddSuccess }) => {
                 />
             </label>
             <button onClick={handleAddBlog}>Add Blog</button>
+            <UploadImage/>
         </div>
     );
 };
