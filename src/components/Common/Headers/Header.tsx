@@ -27,7 +27,7 @@ function Header() {
 
 	return (
 		<nav className='navbar navbar-expand-lg navbar-light bg-light'>
-			<div className='container'>
+			<div className='container justified-container d-flex justify-content-between align-items-center'>
 				<Link className='navbar-brand' to='/'>
 					Logo {/* Replace with your logo if needed */}
 				</Link>
@@ -43,8 +43,10 @@ function Header() {
 					<span className='navbar-toggler-icon'></span>
 				</button>
 				<div className='collapse navbar-collapse' id='navbarSupportedContent'>
-					<ul className='navbar-nav ms-auto mb-2 mb-lg-0'>
+					<div className='navbar-searchbox'>
 						<SearchBox />
+					</div>
+					<ul className='navbar-nav ms-auto mb-2 mb-lg-0'>
 						<li className='nav-item'>
 							<Link className='nav-link' to='/contact'>
 								Contact Us

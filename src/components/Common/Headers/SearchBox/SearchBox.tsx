@@ -56,24 +56,37 @@ const SearchBox: React.FC = () => {
 	};
 
 	return (
-		<div className='d-flex flex-column justify-content-center align-items-center p-3 bg-light'>
+		<div className='search-container d-flex flex-column justify-content-center align-items-center p-3 bg-light'>
 			<SearchInput value={searchQuery} onSearch={handleInputChange} />
+			<div className='search-results'>
 				{loading ? (
 					<div>Loading...</div>
 				) : noResults ? (
-					<div>No results found</div>
+					<div
+						className='p-3 text-center'
+						style={{
+							color: '#333',
+							borderRadius: '0.25rem',
+							margin: '0 auto',
+							border: '1px solid #f8d7da',
+						}}
+					>
+						No results found
+					</div>
 				) : (
 					results.map((result, index) => (
-							<SearchResultBlog
-								title={result.title}
-								image={result.image}
-								author={result.author}
-								blogId={result.blogId}
-								onNavigateToBlog={navigateToBlog}
-								setSearchQuery={setSearchQuery}
-							/>
+						<SearchResultBlog
+							title={result.title}
+							image={result.image}
+							summary={result.summary}
+							author={result.author}
+							blogId={result.blogId}
+							onNavigateToBlog={navigateToBlog}
+							setSearchQuery={setSearchQuery}
+						/>
 					))
 				)}
+			</div>
 		</div>
 	);
 };
