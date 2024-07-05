@@ -6,6 +6,7 @@ import {
   getDocs,
   addDoc,
   QuerySnapshot,
+  updateDoc,
 } from "firebase/firestore";
 import { Bot, Coins } from "./interface";
 import { v4 as uuidv4 } from "uuid"; // Import uuidv4 to generate random IDs
@@ -190,6 +191,39 @@ export async function getBotByUserName(userName: string): Promise<Bot | null> {
     return bot;
   } catch (error) {
     console.error("Error fetching User:", error);
+    throw error;
+  }
+}
+
+// Function to update bot data based on userName
+export async function updateBot(
+  userName: string,
+  updatedBotData: Partial<Bot>
+): Promise<void> {
+  try {
+    const botsCollection = collection(db, "bots");
+    const q = query(botsCollection, where("userName", "==", userName));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      throw new Error(`Bot with userName ${userName} not found`);
+    }
+
+    const docRef = querySnapshot.docs[0].ref;
+    const botData = querySnapshot.docs[0].data() as Bot;
+
+    // Merge existing bot data with updated data
+    const updatedBot: Partial<Bot> = {
+      ...botData,
+      ...updatedBotData,
+    };
+
+    // Update the Firestore document with the merged data
+    await updateDoc(docRef, updatedBot);
+
+    console.log(`Bot with userName ${userName} updated successfully.`);
+  } catch (error) {
+    console.error("Error updating bot:", error);
     throw error;
   }
 }
