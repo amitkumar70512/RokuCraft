@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-dark text-light py-4 mt-5">
+    <footer className="bg-dark text-light py-4 mt-5" 
+    style={{position:'relative',bottom:'0px', width:'100%'}}>
       <div className="container text-center">
         <div className="row">
           <div className="col-lg-4 col-md-6 mb-3">

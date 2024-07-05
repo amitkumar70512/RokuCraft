@@ -21,6 +21,8 @@
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
     "@types/react-router-dom": "^5.3.3",
+    "@types/victory": "^35.0.0",
+    "chart.js": "^4.4.3",
     "express": "^4.19.2",
     "firebase": "^10.12.2",
     "lodash.debounce": "^4.0.8",
@@ -28,6 +30,7 @@
     "quill": "^2.0.2",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.3",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-markdown": "^9.0.1",
     "react-quill": "^2.0.0",
@@ -35,7 +38,8 @@
     "react-router-dom": "^6.22.0",
     "redux": "^5.0.1",
     "ts-loader": "^9.5.1",
-    "uuid": "^10.0.0"
+    "uuid": "^10.0.0",
+    "victory": "^37.0.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.5.0",
