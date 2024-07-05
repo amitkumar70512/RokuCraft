@@ -4,13 +4,11 @@ import React from 'react';
 import FeaturedBlogs from '../Blogs/FeaturedBlogs';
 import Sidebar from '../Common/Sidebar/Sidebar';
 import Blogs from '../Blogs/Blogs';
-import SearchBar from '../../components/Common/Headers/SearchBar';
 
 
 function Home() {
     return (
         <div className="m-5">
-            <SearchBar/>
             <ContinueReading />
             <LatestBlogs />
             <h2>Featured Blogs</h2>

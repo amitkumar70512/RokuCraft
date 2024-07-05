@@ -1,0 +1,26 @@
+/* SearchBox.module.css */
+
+.search-container{
+  position: relative;
+}
+
+.search-container .search-results {
+  position: absolute;
+  top: 100%;
+  left: -50%;
+  width: 60vw;
+  background-color: white;
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-height: 70vh;
+  overflow-y: auto; 
+}
+
+.search-container .search-results .search-result-blog {
+  padding: 8px 16px;
+  cursor: pointer; 
+}
+
+.search-container .search-results .search-result-blog:hover {
+  background-color: #ddd; /* Highlight on hover */
+}
