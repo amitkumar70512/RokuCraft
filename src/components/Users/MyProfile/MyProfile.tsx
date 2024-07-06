@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Bot, Coins } from '../../../firebase/interface';
+import { Bot } from '../../../firebase/interface';
 import { getBotByUserName, updateBot } from '../../../firebase/bots';
 
+// use this to show my profile
 const MyProfile: React.FC = () => {
   const { userName } = useParams<{ userName: string }>();
   const [botData, setBotData] = useState<Bot | null>(null);

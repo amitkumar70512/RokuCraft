@@ -12,7 +12,7 @@ import Login from './components/Login/Login';
 import Register from './components/Register/Register';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import IndividualBlog from './components/Blogs/IndividualBlog'; // Adjust path as needed
-import BotProfile from './components/Users/MyProfile/MyProfile';
+import BotProfile from './components/Users/UserProfile/UserProfile';
 import LoadingSpinner from './components/Common/LoadingSpinner/LoadingSpinner';
 import { useSelector } from 'react-redux';
 import { RootState } from './redux/store/store';
